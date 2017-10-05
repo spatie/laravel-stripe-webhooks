@@ -138,7 +138,7 @@ After having created your job you must register it at the `jobs` array in the `s
 ],
 ```
 
-Unless something goes terribly wrong, the response to the webhook call will always be a `200` regardless of if you've defined a job that handles the request. Sending a `200` will prevent Stripe from retrying sending the events over and over again.
+Unless something goes terribly wrong, the response to the webhook call will always be a `200` regardless if you've defined a job that handles the request. Sending a `200` will prevent Stripe from retrying sending the events over and over again.
 
 ### All webhook requests will be logged
 
