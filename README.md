@@ -146,7 +146,12 @@ Any webhook request with a valid signature will be logged in the `stripe_webhook
 
 If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`.
 
+### Retrying handling a webhook
+
+All incoming webhook request are written to the database. This is incredibly value when something goes wrong handling a webhook call.  Because the job accepted the stored `WebhookCall`, you can easily retry the job after you investigated and fixed the cause of failure.
+
 ### Validating requests
+
 Stripe will sign every request hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request will not be logged in the `stripe_webhook_calls_table` but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
 
 ## Changelog
