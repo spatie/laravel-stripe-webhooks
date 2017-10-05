@@ -11,7 +11,7 @@ class StripeWebhookServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/uptime-monitor.php' => config_path('uptime-monitor.php'),
+                __DIR__.'/../config/stripe-webhooks.php' => config_path('stripe-webhooks.php'),
             ], 'config');
         }
 
