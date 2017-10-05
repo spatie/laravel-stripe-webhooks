@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\StripeWebhooks\Tests;
+namespace Spatie\StripeWebhooks\Tests\Middlewares;
 
 use Illuminate\Support\Facades\Route;
-use Spatie\StripeWebhooks\Test\TestCase;
 use Spatie\StripeWebhooks\Middlewares\VerifySignature;
+use Spatie\StripeWebhooks\Tests\TestCase;
 
 class VerifySignatureTest extends TestCase
 {

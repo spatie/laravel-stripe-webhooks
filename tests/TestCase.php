@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\StripeWebhooks\Test;
+namespace Spatie\StripeWebhooks\Tests;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler;
