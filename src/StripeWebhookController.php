@@ -4,7 +4,7 @@ namespace Spatie\StripeWebhooks;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 
 class StripeWebhookController extends Controller
