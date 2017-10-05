@@ -3,16 +3,16 @@
 namespace Spatie\StripeWebhooks\Tests;
 
 use Illuminate\Support\Facades\Route;
-use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 use Spatie\StripeWebhooks\Test\TestCase;
+use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 
-class StripeSignatureTest extends TestCase
+class VerifySignatureTest extends TestCase
 {
     public function setUp()
     {
         parent::setUp();
 
-        Route::post('stripe-webhooks', function() {
+        Route::post('stripe-webhooks', function () {
             return 'ok';
         })->middleware(VerifySignature::class);
     }

@@ -3,10 +3,10 @@
 namespace Spatie\StripeWebhooks\Middlewares;
 
 use Closure;
-use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 use Stripe\Webhook;
 use UnexpectedValueException;
 use Stripe\Error\SignatureVerification;
+use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 
 class VerifySignature
 {
@@ -31,7 +31,7 @@ class VerifySignature
 
         if (empty($secret)) {
             throw WebhookFailed::signingSecretNotSet();
-        };
+        }
 
         try {
             Webhook::constructEvent($payload, $signature, $secret);
