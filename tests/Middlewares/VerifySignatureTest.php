@@ -3,8 +3,8 @@
 namespace Spatie\StripeWebhooks\Tests\Middlewares;
 
 use Illuminate\Support\Facades\Route;
-use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 use Spatie\StripeWebhooks\Tests\TestCase;
+use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 
 class VerifySignatureTest extends TestCase
 {
