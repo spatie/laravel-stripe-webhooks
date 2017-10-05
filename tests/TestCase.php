@@ -2,10 +2,10 @@
 
 namespace Spatie\StripeWebhooks\Test;
 
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Foundation\Exceptions\Handler;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Exception;
+use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Spatie\StripeWebhooks\StripeWebhookServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase

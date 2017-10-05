@@ -2,7 +2,7 @@
 
 return [
 
-    /**
+    /*
      * Available job types : https://stripe.com/docs/api#event_types
      */
     'jobs' => [
