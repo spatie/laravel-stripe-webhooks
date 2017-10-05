@@ -152,7 +152,7 @@ All incoming webhook requests are written to the database. This is incredibly va
 
 ### Validating requests
 
-Stripe will sign every request hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request will not be logged in the `stripe_webhook_calls_table` but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
+Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent be Stripe. The request will not be logged in the `stripe_webhook_calls_table` but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
 
 ## Changelog
 
