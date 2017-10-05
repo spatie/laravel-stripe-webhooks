@@ -148,7 +148,7 @@ If something goes wrong during the webhook request the thrown exception will be 
 
 ### Retrying handling a webhook
 
-All incoming webhook request are written to the database. This is incredibly value when something goes wrong handling a webhook call.  Because the job accepted the stored `WebhookCall`, you can easily retry the job after you investigated and fixed the cause of failure.
+All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong handling a webhook call.  Because the job accepted the stored `WebhookCall`, you can easily retry the job after you investigated and fixed the cause of failure.
 
 ### Validating requests
 
