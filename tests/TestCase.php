@@ -6,6 +6,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Exception;
+use Spatie\StripeWebhooks\StripeWebhookServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -17,7 +18,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-
+            StripeWebhookServiceProvider::class,
         ];
     }
 
