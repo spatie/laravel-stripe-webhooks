@@ -21,6 +21,10 @@ class StripeWebhookServiceProvider extends ServiceProvider
                 __DIR__.'/../database/migrations/create_stripe_webhooks_table.php.stub' => database_path('migrations/'.$timestamp.'_create_stripe_webhooks_table.php'),
             ], 'migrations');
         }
+
+        Route::macro('stripeWebhooks', function ($url) {
+            return Route::post($url, 'Spatie\StripeWebhooks\StripeWebhookController');
+        });
     }
 
     public function register()

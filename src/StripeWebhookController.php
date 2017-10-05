@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Front;
+namespace Spatie\StripeWebhooks;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\StripeWebhookCall;
 use App\Http\Controllers\Controller;
 use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 
@@ -21,7 +20,9 @@ class StripeWebhookController extends Controller
 
         $eventType = $eventPayload['type'];
 
-        $stripeWebhookCall = StripeWebhookCall::create([
+        $modelClass = config('stripe-webhooks.model');
+
+        $stripeWebhookCall = $modelClass::create([
             'type' => $eventType,
             'payload' => $eventPayload,
         ]);

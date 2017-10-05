@@ -27,7 +27,7 @@ class VerifySignature
 
     protected function isValid(string $signature, string $payload): bool
     {
-        $secret = config('services.stripe.webhook_signing_secret');
+        $secret = config('stripe-webhooks.signing_secret');
 
         if (empty($secret)) {
             throw WebhookFailed::signingSecretNotSet();

@@ -49,7 +49,7 @@ class VerifySignatureTest extends TestCase
     /** @test */
     public function it_will_fail_when_the_signature_is_invalid()
     {
-        config(['services.stripe.webhook_signing_secret' => 'secret']);
+        config(['stripe-webhooks.signing_secret' => 'secret']);
 
         $response = $this->postJson(
             'stripe-webhooks',
