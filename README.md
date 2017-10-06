@@ -215,7 +215,7 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 StripeWebhookCall::find($id)->process();
 ```
 
-### Perform custom logic
+### Performing custom logic
 
 You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specify your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`:
 
