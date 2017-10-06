@@ -24,7 +24,7 @@ class StripeWebhooksServiceProvider extends ServiceProvider
         }
 
         Route::macro('stripeWebhooks', function ($url) {
-            return Route::post($url, 'Spatie\StripeWebhooks\StripeWebhooksController');
+            return Route::post($url, '\Spatie\StripeWebhooks\StripeWebhooksController');
         });
     }
 

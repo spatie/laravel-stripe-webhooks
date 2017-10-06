@@ -87,7 +87,7 @@ The lasts steps take care of the routing. At [the Stripe dashboard](https://dash
 Route::stripeWebhooks('webhook-url-configured-at-the-stripe-dashboard')
 ```
 
-Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to `except` array of the `VerifyCsrf` middleware .
+Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to `except` array of the `VerifyCsrfToken` middleware .
 
 ```php
 protected $except = [
