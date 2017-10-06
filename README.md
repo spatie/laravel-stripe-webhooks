@@ -41,15 +41,15 @@ This is the contents of the config file that will be published at `config/stripe
 ```php
 return [
 
-    /**
+    /*
      * Stripe will sign webhooks using a secret. You can find the secret used at the webhook
      * configuration settings: https://dashboard.stripe.com/account/webhooks
      */
     'signing_secret' => '',
 
-    /**
+    /*
      * Here you can define the job that should be run when a certain webhook hits your .
-     * application. The key is name of stripe event type with the `.` replaced by `_`
+     * application. The key is name of stripe event type with the `.` replace by `.`
      *
      * You can find a list of stripe webhook type here:
      * https://stripe.com/docs/api#event_types
@@ -60,10 +60,12 @@ return [
     ],
 
     /*
-     * The class name of the model to be used.
+     * The class name of the model to be used. The class should be or extend 
+     * Spatie\StripeWebhooks\StripeWebhookCall
      */
-    'model' => App\Models\StripeWebhookCall::class,
+    'model' => Spatie\StripeWebhooks\StripeWebhookCall::class,
 ];
+
 ```
 
 In the `signing_secret` key of the config file you should add a valid webhook secret.  You can find the secret used at [the webhook configuration settings on the Stripe dashboard](https://dashboard.stripe.com/account/webhooks).
@@ -152,9 +154,43 @@ If something goes wrong during the webhook request the thrown exception will be 
 
 All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong handling a webhook call.  Because the job accepted the stored `WebhookCall`, you can easily retry the job after you investigated and fixed the cause of failure.
 
+Here's how you can retry handling a previously failed web hook call:
+
+```php
+use Spatie\StripeWebhooks\StripeWebhookCall;
+
+StripeWebhookCall::find($id)->process();
+```
+
+### Perform custom logic
+
+You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specify your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`:
+
+Here's an example:
+
+```php
+use Spatie\StripeWebhooks\StripeWebhookCall;
+
+class MyCustomWebhookCall extends StripeWebhookCall
+{
+    public function process()
+    {
+        // do some custom stuff beforehand
+        
+        parent::process();
+        
+        // do some custom stuff afterwards
+    }
+}
+```
+
 ### Validating requests
 
 Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent be Stripe. The request will not be logged in the `stripe_webhook_calls_table` but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
+
+### Integration with Cashier
+
+TODO
 
 ## Changelog
 

@@ -16,6 +16,8 @@ class StripeWebhookCall extends Model
 
     public function process()
     {
+        $this->clearException();
+
         $jobClass = $this->determineJobClass($this->type);
 
         if ($jobClass === '') {
@@ -32,7 +34,15 @@ class StripeWebhookCall extends Model
         return config("stripe-webhooks.jobs.{$jobConfigKey}", '');
     }
 
-    public function saveException(Exception $exception)
+    protected function clearException() {
+        $this->exception = null;
+
+        $this->save();
+
+        return $this;
+    }
+
+    protected function saveException(Exception $exception)
     {
         $this->exception = [
             'code' => $exception->getCode(),

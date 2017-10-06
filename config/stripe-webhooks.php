@@ -21,7 +21,8 @@ return [
     ],
 
     /*
-     * The class name of the model to be used.
+     * The class name of the model to be used. The class should be or extend
+     * Spatie\StripeWebhooks\StripeWebhookCall
      */
-    'model' => App\Models\StripeWebhookCall::class,
+    'model' => Spatie\StripeWebhooks\StripeWebhookCall::class,
 ];
