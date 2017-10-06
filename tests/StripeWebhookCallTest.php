@@ -33,7 +33,7 @@ class StripeWebhookCallTest extends TestCase
     {
         $this->stripeWebhookCall->process();
 
-        Bus::assertDispatched(DummyJob::class, function(DummyJob $job) {
+        Bus::assertDispatched(DummyJob::class, function (DummyJob $job) {
             return $job->stripeWebhookCall->id === $this->stripeWebhookCall->id;
         });
     }
@@ -89,5 +89,4 @@ class StripeWebhookCallTest extends TestCase
 
         $this->assertNull($this->stripeWebhookCall->exception);
     }
-
 }
