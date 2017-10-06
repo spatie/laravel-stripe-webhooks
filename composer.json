@@ -18,7 +18,7 @@
     "require": {
         "php": "^7.1",
         "illuminate/support": "~5.5.0",
-        "orchestra/testbench": "~3.3.0",
+        "orchestra/testbench": "~3.5.0",
         "stripe/stripe-php": "^5.2"
     },
     "require-dev": {
