@@ -17,7 +17,7 @@ class CreateStripeWebhookCallsTable extends Migration
 
             $table->string('type')->nullable();
             $table->text('payload')->nullable();
-            $table->string('exception')->nullable();
+            $table->longText('exception')->nullable();
 
             $table->timestamps();
         });
