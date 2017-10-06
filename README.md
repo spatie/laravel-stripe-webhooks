@@ -237,9 +237,9 @@ class MyCustomWebhookCall extends StripeWebhookCall
 }
 ```
 
-### Integration with Cashier
+### About Cashier
 
-TODO
+[Laravel Cashier](https://laravel.com/docs/5.5/billing#handling-stripe-webhooks) allows you to easily handle Stripe subscriptions. You may install it in the same application together with `laravel-stripe-webhooks`. There are no known conflicts.
 
 ## Changelog
 
