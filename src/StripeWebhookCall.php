@@ -23,9 +23,9 @@ class StripeWebhookCall extends Model
             throw WebhookFailed::missingType($this);
         }
 
-        $jobClass = $this->determineJobClass($this->type);
-
         event("stripe-webhooks::{$this->type}", $this);
+
+        $jobClass = $this->determineJobClass($this->type);
 
         if ($jobClass === '') {
             return;
