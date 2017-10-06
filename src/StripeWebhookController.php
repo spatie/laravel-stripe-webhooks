@@ -18,12 +18,10 @@ class StripeWebhookController extends Controller
     {
         $eventPayload = $request->input();
 
-        $eventType = $eventPayload['type'];
-
         $modelClass = config('stripe-webhooks.model');
 
         $stripeWebhookCall = $modelClass::create([
-            'type' => $eventType,
+            'type' =>  $eventPayload['type'] ?? '',
             'payload' => $eventPayload,
         ]);
 

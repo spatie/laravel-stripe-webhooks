@@ -18,6 +18,8 @@ class StripeWebhookCallTest extends TestCase
 
         Bus::fake();
 
+        Event::fake();
+
         config(['stripe-webhooks.jobs' => ['my_type' => DummyJob::class]]);
 
         $this->stripeWebhookCall = StripeWebhookCall::create([
@@ -37,23 +39,35 @@ class StripeWebhookCallTest extends TestCase
     }
 
     /** @test */
-    public function it_will_not_fire_off_a_job_for_another_type()
+    public function it_will_not_dispatch_a_job_for_another_type()
     {
         config(['stripe-webhooks.jobs' => ['another_type' => DummyJob::class]]);
 
         $this->stripeWebhookCall->process();
 
-        Bus::assertDispatched(DummyJob::class);
+        Bus::assertNotDispatched(DummyJob::class);
     }
 
     /** @test */
-    public function it_will_not_fire_jobs_when_no_jobs_are_configured()
+    public function it_will_not_dispatch_jobs_when_no_jobs_are_configured()
     {
         config(['stripe-webhooks.jobs' => []]);
 
         $this->stripeWebhookCall->process();
 
         Bus::assertNotDispatched(DummyJob::class);
+    }
+
+    public function it_will_dispatch_events_even_when_no_corresponding_job_is_configured()
+    {
+        $payload = [
+            'type' => 'yet.another.type',
+            'payload' => ['name' => 'value'],
+        ];
+
+        $webhookCall = StripeWebhookCall::create($payload);
+
+        Event::assertDispatched("stripe-webhooks::{$payload['type']}", $payload);
     }
 
     /** @test */
