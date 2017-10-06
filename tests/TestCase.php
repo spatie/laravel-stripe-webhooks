@@ -36,9 +36,9 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function setUpDatabase()
     {
-        include_once __DIR__.'/../database/migrations/create_stripe_webhooks_calls_table.php.stub';
+        include_once __DIR__ . '/../database/migrations/create_stripe_webhook_calls_table.php.stub';
 
-        (new \CreateStripeWebhooksTable())->up();
+        (new \CreateStripeWebhookCallsTable())->up();
     }
 
     /**
