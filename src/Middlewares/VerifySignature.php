@@ -5,8 +5,6 @@ namespace Spatie\StripeWebhooks\Middlewares;
 use Closure;
 use Exception;
 use Stripe\Webhook;
-use UnexpectedValueException;
-use Stripe\Error\SignatureVerification;
 use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 
 class VerifySignature
