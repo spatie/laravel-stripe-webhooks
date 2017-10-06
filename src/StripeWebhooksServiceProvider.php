@@ -5,7 +5,7 @@ namespace Spatie\StripeWebhooks;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-class StripeWebhookServiceProvider extends ServiceProvider
+class StripeWebhooksServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -24,7 +24,7 @@ class StripeWebhookServiceProvider extends ServiceProvider
         }
 
         Route::macro('stripeWebhooks', function ($url) {
-            return Route::post($url, 'Spatie\StripeWebhooks\StripeWebhookController');
+            return Route::post($url, 'Spatie\StripeWebhooks\StripeWebhooksController');
         });
     }
 

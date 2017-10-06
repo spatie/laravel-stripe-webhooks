@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 
-class StripeWebhookController extends Controller
+class StripeWebhooksController extends Controller
 {
     public function __construct()
     {
