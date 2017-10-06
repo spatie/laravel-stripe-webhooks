@@ -144,7 +144,7 @@ Unless something goes terribly wrong, the response to the webhook call will alwa
 
 ### All webhook requests will be logged
 
-All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. This happens for all events, regardless of it has a job that handles the event or not. The table has a `payload` column where the entire payload of the incoming webhook is saved.
+All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. This happens for all events, regardless if it has a job that handles the event or not. The table has a `payload` column where the entire payload of the incoming webhook is saved.
 
 If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`.
 
