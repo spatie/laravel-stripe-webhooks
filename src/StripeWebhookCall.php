@@ -58,7 +58,8 @@ class StripeWebhookCall extends Model
         return config("stripe-webhooks.jobs.{$jobConfigKey}", '');
     }
 
-    protected function clearException() {
+    protected function clearException()
+    {
         $this->exception = null;
 
         $this->save();
