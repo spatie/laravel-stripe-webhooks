@@ -5,8 +5,8 @@ namespace Spatie\StripeWebhooks\Middlewares;
 use Closure;
 use Stripe\Webhook;
 use UnexpectedValueException;
-use Stripe\Error\SignatureVerification;
 use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
+use Stripe\Error\SignatureVerification as SignatureVerificationException;
 
 class VerifySignature
 {
@@ -35,7 +35,9 @@ class VerifySignature
 
         try {
             Webhook::constructEvent($payload, $signature, $secret);
-        } catch (UnexpectedValueException | SignatureVerification $exception) {
+        } catch (UnexpectedValueException $exception) {
+            return false;
+        } catch (SignatureVerificationException $exception) {
             return false;
         }
 
