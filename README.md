@@ -97,7 +97,19 @@ protected $except = [
 
 ## Usage
 
-Stripe will send out webhooks for several events. You can find the [full list of events types](https://stripe.com/docs/api#event_types) in the Stripe documentation. If you want to do something when a specific event type comes in you should define a job. Here's an example of such a job.
+Stripe will send out webhooks for several event types. You can find the [full list of events types](https://stripe.com/docs/api#event_types) in the Stripe documentation.
+
+Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent be Stripe. The request will not be logged in the `stripe_webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
+ 
+Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
+
+If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`. 
+ 
+There are two ways this package enables you to handle webhook requests: you can opt to queue a job or listen to the events the package will fire.
+ 
+ 
+### Handling webhook requests using jobs 
+If you want to do something when a specific event type comes in you can define a job that does the work. Here's an example of such a job.
 
 ```php
 <?php
@@ -114,7 +126,7 @@ class HandleChargeableSource implements ShouldQueue
 {
      use InteractsWithQueue, Queueable, SerializesModels;
     
-    /** @var \App\Models\StripeWebhookCall */
+    /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
     public $webhookCall;
 
     public function __construct(StripeWebhookCall $webhookCall)
@@ -125,6 +137,7 @@ class HandleChargeableSource implements ShouldQueue
     public function handle()
     {
         // do your work here
+        
         // you can access the payload of the webhook call with `$this->webhookCall->payload`
     }
 }
@@ -142,13 +155,15 @@ After having created your job you must register it at the `jobs` array in the `s
 ],
 ```
 
-Unless something goes terribly wrong, the response to the webhook call will always be a `200` regardless if you've defined a job that handles the request. Sending a `200` will prevent Stripe from resending the same event over and over again.
+### Handling webhook requests using events 
 
-### All webhook requests will be logged
+Instead of queueing jobs to perform some work when a webhook request comes in, you can opt to listen to the events this package will fire. Whenever a valid request hits your app the package will fire a `stripe-webhooks::<name-of-the-event>`. For if a `source.chargeable` event hits your app, the `stripe-webhooks::
 
-All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. This happens for all events, regardless of it has a job that handles the event or not. The table has a `payload` column where the entire payload of the incoming webhook is saved.
+The payload of the events will be the instance of `StripeWebhookCall` that was created for the incoming request. 
 
-If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`.
+TODO: add examples
+
+## Advanced usage
 
 ### Retrying handling a webhook
 
@@ -183,10 +198,6 @@ class MyCustomWebhookCall extends StripeWebhookCall
     }
 }
 ```
-
-### Validating requests
-
-Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent be Stripe. The request will not be logged in the `stripe_webhook_calls_table` but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
 
 ### Integration with Cashier
 
