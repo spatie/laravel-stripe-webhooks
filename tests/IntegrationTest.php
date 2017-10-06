@@ -101,8 +101,4 @@ class IntegrationTest extends TestCase
 
         Bus::assertNotDispatched(DummyJob::class);
     }
-
-
-
-
 }
