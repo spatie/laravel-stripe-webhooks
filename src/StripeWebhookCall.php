@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Spatie\StripeWebhooks;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 
 class StripeWebhookCall extends Model
 {
@@ -24,7 +25,24 @@ class StripeWebhookCall extends Model
             return;
         }
 
+        if (! class_exists($jobClass)) {
+            throw WebhookFailed::jobClassDoesNotExist($this);
+        }
+
         dispatch(new $jobClass($this));
+    }
+
+    public function saveException(Exception $exception)
+    {
+        $this->exception = [
+            'code' => $exception->getCode(),
+            'message' => $exception->getMessage(),
+            'trace' => $exception->getTraceAsString(),
+        ];
+
+        $this->save();
+
+        return $this;
     }
 
     protected function determineJobClass(string $eventType): string
@@ -36,19 +54,6 @@ class StripeWebhookCall extends Model
 
     protected function clearException() {
         $this->exception = null;
-
-        $this->save();
-
-        return $this;
-    }
-
-    protected function saveException(Exception $exception)
-    {
-        $this->exception = [
-            'code' => $exception->getCode(),
-            'message' => $exception->getMessage(),
-            'exception' => $exception->getTraceAsString(),
-        ];
 
         $this->save();
 
