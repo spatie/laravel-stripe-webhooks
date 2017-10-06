@@ -31,6 +31,8 @@ abstract class TestCase extends OrchestraTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        config(['stripe-webhooks.signing_secret' => 'test_signing_secret']);
     }
 
     protected function setUpDatabase()
@@ -68,5 +70,18 @@ abstract class TestCase extends OrchestraTestCase
                 throw $exception;
             }
         });
+    }
+    
+    protected function determineStripeSignature(array $payload): string
+    {
+        $secret = config('stripe-webhooks.signing_secret');
+
+        $timestamp = time();
+
+        $timestampedPayload = $timestamp . '.'. json_encode($payload);
+
+        $signature = hash_hmac("sha256", $timestampedPayload, $secret);
+
+        return "t={$timestamp},v1={$signature}";
     }
 }

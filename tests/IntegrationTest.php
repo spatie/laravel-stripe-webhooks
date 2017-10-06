@@ -20,20 +20,20 @@ class IntegrationTest extends TestCase
         Route::stripeWebhooks('stripe-webhooks');
 
         config(['stripe-webhooks.jobs' => ['my_type' => DummyJob::class]]);
-
-        $this->withoutMiddleware();
     }
 
     /** @test */
-    public function it_can_handle_a_valid_call()
+    public function it_can_handle_a_valid_request()
     {
         $payload = [
             'type' => 'my.type',
             'key' => 'value'
         ];
 
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
         $this
-            ->post('stripe-webhooks', $payload)
+            ->postJson('stripe-webhooks', $payload, $headers)
             ->assertSuccessful();
 
         $this->assertCount(1, StripeWebhookCall::get());
@@ -58,10 +58,35 @@ class IntegrationTest extends TestCase
     }
 
     /** @test */
-    public function it_can_handle_an_invalid_call()
+    public function a_request_with_an_invalid_signature_wont_be_logged()
     {
+        $payload = [
+            'type' => 'my.type',
+            'key' => 'value'
+        ];
+
+        $headers = ['Stripe-Signature' => 'invalid_signature'];
+
         $this
-            ->post('stripe-webhooks', ['invalid_payload'])
+            ->postJson('stripe-webhooks', $payload, $headers)
+            ->assertStatus(400);
+
+        $this->assertCount(0, StripeWebhookCall::get());
+
+        Event::assertNotDispatched('stripe-webhooks::my.type');
+
+        Bus::assertNotDispatched(DummyJob::class);
+    }
+
+    /** @test */
+    public function a_request_with_an_invalid_payload_will_be_logged_but_events_and_jobs_will_not_be_dispatched()
+    {
+        $payload = ['invalid_payload'];
+
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this
+            ->postJson('stripe-webhooks', $payload, $headers)
             ->assertStatus(400);
 
         $this->assertCount(1, StripeWebhookCall::get());
@@ -76,4 +101,8 @@ class IntegrationTest extends TestCase
 
         Bus::assertNotDispatched(DummyJob::class);
     }
+
+
+
+
 }

@@ -18,6 +18,22 @@ class VerifySignatureTest extends TestCase
     }
 
     /** @test */
+    public function it_will_succeed_when_the_request_has_a_valid_signature()
+    {
+        $payload = ['event' => 'source.chargeable'];
+
+        $response = $this->postJson(
+            'stripe-webhooks',
+            $payload,
+            ['Stripe-Signature' => $this->determineStripeSignature($payload)]
+        );
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('ok');
+    }
+
+    /** @test */
     public function it_will_fail_when_the_signature_header_is_not_set()
     {
         $response = $this->postJson(
@@ -35,6 +51,8 @@ class VerifySignatureTest extends TestCase
     /** @test */
     public function it_will_fail_when_the_signing_secret_is_not_set()
     {
+        config(['stripe-webhooks.signing_secret' => '']);
+
         $response = $this->postJson(
             'stripe-webhooks',
             ['event' => 'source.chargeable'],
@@ -49,8 +67,6 @@ class VerifySignatureTest extends TestCase
     /** @test */
     public function it_will_fail_when_the_signature_is_invalid()
     {
-        config(['stripe-webhooks.signing_secret' => 'secret']);
-
         $response = $this->postJson(
             'stripe-webhooks',
             ['event' => 'source.chargeable'],
