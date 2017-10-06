@@ -9,7 +9,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-stripe-webhooks)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
 
-[Stripe](https://stripe.com) can notify your application of events using webhooks. This package can help you handle those webhooks. Out of the box it will verify the stripe signature of all incoming requests. All valid calls will be logged to the database. You can easily define jobs that should be executed when specify events hit your app.
+[Stripe](https://stripe.com) can notify your application of events using webhooks. This package can help you handle those webhooks. Out of the box it will verify the stripe signature of all incoming requests. All valid calls will be logged to the database. You can easily define jobs that should be executed when specific events hit your app.
 
 Before using this package we highly recommend reading [the entire documentation on webhooks over at Stripe](https://stripe.com/docs/webhooks).
 
@@ -31,7 +31,7 @@ composer require spatie/laravel-stripe-webhooks
 
 The service provider will automatically register itself.
 
-You must publish the config-file with:
+You must publish the config file with:
 ```bash
 php artisan vendor:publish --provider="Spatie\StripeWebhooks\StripeWebhooksServiceProvider" --tag="config"
 ```
