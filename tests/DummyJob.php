@@ -16,6 +16,5 @@ class DummyJob
 
     public function handle()
     {
-
     }
 }

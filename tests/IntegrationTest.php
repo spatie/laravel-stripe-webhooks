@@ -27,7 +27,7 @@ class IntegrationTest extends TestCase
     {
         $payload = [
             'type' => 'my.type',
-            'key' => 'value'
+            'key' => 'value',
         ];
 
         $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
@@ -44,15 +44,15 @@ class IntegrationTest extends TestCase
         $this->assertEquals($payload, $webhookCall->payload);
         $this->assertNull($webhookCall->exception);
 
-        Event::assertDispatched('stripe-webhooks::my.type', function($event, $eventPayload) use ($webhookCall) {
-            if ( ! $eventPayload instanceof StripeWebhookCall) {
+        Event::assertDispatched('stripe-webhooks::my.type', function ($event, $eventPayload) use ($webhookCall) {
+            if (! $eventPayload instanceof StripeWebhookCall) {
                 return false;
             }
 
             return $eventPayload->id === $webhookCall->id;
         });
 
-        Bus::assertDispatched(DummyJob::class, function(DummyJob $job) use ($webhookCall) {
+        Bus::assertDispatched(DummyJob::class, function (DummyJob $job) use ($webhookCall) {
             return $job->stripeWebhookCall->id === $webhookCall->id;
         });
     }
@@ -62,7 +62,7 @@ class IntegrationTest extends TestCase
     {
         $payload = [
             'type' => 'my.type',
-            'key' => 'value'
+            'key' => 'value',
         ];
 
         $headers = ['Stripe-Signature' => 'invalid_signature'];

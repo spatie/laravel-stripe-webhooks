@@ -10,7 +10,6 @@ use Spatie\StripeWebhooks\StripeWebhookServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -71,16 +70,16 @@ abstract class TestCase extends OrchestraTestCase
             }
         });
     }
-    
+
     protected function determineStripeSignature(array $payload): string
     {
         $secret = config('stripe-webhooks.signing_secret');
 
         $timestamp = time();
 
-        $timestampedPayload = $timestamp . '.'. json_encode($payload);
+        $timestampedPayload = $timestamp.'.'.json_encode($payload);
 
-        $signature = hash_hmac("sha256", $timestampedPayload, $secret);
+        $signature = hash_hmac('sha256', $timestampedPayload, $secret);
 
         return "t={$timestamp},v1={$signature}";
     }
