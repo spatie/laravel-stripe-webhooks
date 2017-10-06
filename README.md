@@ -188,13 +188,12 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 
 class ChargeSource implements ShouldQueue
 {
-    public function handle(string $eventName, StripeWebhookCall $webhookCall)
+    public function handle(StripeWebhookCall $call)
     {
         // do your work here
-        
+
         // you can access the payload of the webhook call with `$webhookCall->payload`
-    }
-    
+    }   
 }
 ```
 
