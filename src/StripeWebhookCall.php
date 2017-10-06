@@ -18,7 +18,7 @@ class StripeWebhookCall extends Model
     {
         $jobClass = $this->determineJobClass($this->type);
 
-        if ($jobClass === '') {
+        if (! class_exists($jobClass) {
             return;
         }
 
