@@ -3,6 +3,7 @@
 namespace Spatie\StripeWebhooks\Middlewares;
 
 use Closure;
+use Exception;
 use Stripe\Webhook;
 use UnexpectedValueException;
 use Stripe\Error\SignatureVerification;
@@ -35,7 +36,7 @@ class VerifySignature
 
         try {
             Webhook::constructEvent($payload, $signature, $secret);
-        } catch (UnexpectedValueException | SignatureVerification $exception) {
+        } catch (Exception $exception) {
             return false;
         }
 
