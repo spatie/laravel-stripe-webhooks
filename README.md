@@ -1,5 +1,3 @@
-**WORK IN PROGRESS, DO NOT USE YET. ETA FOR STABLE RELEASE: MID OCTOBER 2017**
-
 # Handle Stripe webhooks in a Laravel application
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
