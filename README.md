@@ -161,7 +161,46 @@ Instead of queueing jobs to perform some work when a webhook request comes in, y
 
 The payload of the events will be the instance of `StripeWebhookCall` that was created for the incoming request. 
 
-TODO: add examples
+Let's take a look at how you can listen for such an event. In the `EventServiceProvider` you can register a listener.
+
+```php
+/**
+ * The event listener mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    'stripe-webhooks::source.chargeable' => [
+        App\Listeners\ChargeSource::class,
+    ],
+];
+```
+
+Here's an example of such a listener:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Spatie\StripeWebhooks\StripeWebhookCall;
+
+class ChargeSource implements ShouldQueue
+{
+    public function handle(string $eventName, StripeWebhookCall $webhookCall)
+    {
+        // do your work here
+        
+        // you can access the payload of the webhook call with `$webhookCall->payload`
+    }
+    
+}
+```
+
+We highly recommend that you make the event listener queueable. By doing that, you can minimize the response time of the webhook requests. This allows you to handle more stripe webhook requests and avoiding timeouts.
+
+The above example is only one way to handle events in a Laravel. To learn the other options, read [the Laravel documentation on handling events](https://laravel.com/docs/5.5/events). 
 
 ## Advanced usage
 
