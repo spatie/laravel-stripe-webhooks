@@ -203,9 +203,7 @@ The above example is only one way to handle events in a Laravel. To learn the ot
 
 ### Retrying handling a webhook
 
-All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong handling a webhook call.  Because the job accepted the stored `WebhookCall`, you can easily retry the job after you investigated and fixed the cause of failure.
-
-Here's how you can retry handling a previously failed web hook call:
+All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong handling a webhook call. You can easily retry the job after you investigated and fixed the cause of failure like this:
 
 ```php
 use Spatie\StripeWebhooks\StripeWebhookCall;
