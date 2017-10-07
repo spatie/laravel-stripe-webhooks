@@ -18,10 +18,10 @@
     "require": {
         "php": "^7.0",
         "illuminate/support": "~5.5.0",
-        "orchestra/testbench": "~3.5.0",
         "stripe/stripe-php": "^5.2"
     },
     "require-dev": {
+        "orchestra/testbench": "~3.5.0",
         "phpunit/phpunit": "^6.4"
     },
     "autoload": {
