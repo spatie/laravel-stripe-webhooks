@@ -10,7 +10,7 @@ return [
 
     /*
      * Here you can define the job that should be run when a certain webhook hits your .
-     * application. The key is name of stripe event type with the `.` replaced by `.`
+     * application. The key is name of stripe event type with the `.` replaced by `_`
      *
      * You can find a list of stripe webhook type here:
      * https://stripe.com/docs/api#event_types
