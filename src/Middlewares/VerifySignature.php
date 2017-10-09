@@ -14,7 +14,7 @@ class VerifySignature
         $signature = $request->header('Stripe-Signature');
 
         if (! $signature) {
-            throw WebhookFailed::signatureMissing();
+            throw WebhookFailed::missingSignature();
         }
 
         if (! $this->isValid($signature, $request->getContent())) {

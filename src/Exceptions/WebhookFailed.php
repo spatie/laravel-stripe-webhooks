@@ -7,7 +7,7 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 
 class WebhookFailed extends Exception
 {
-    public static function signatureMissing()
+    public static function missingSignature()
     {
         return new static('The request did not contain a header named `Stripe-Signature`');
     }
