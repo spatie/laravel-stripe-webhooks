@@ -9,7 +9,7 @@
 
 [Stripe](https://stripe.com) can notify your application of events using webhooks. This package can help you handle those webhooks. Out of the box it will verify the stripe signature of all incoming requests. All valid calls will be logged to the database. You can easily define jobs or events that should be dispatched when specific events hit your app.
 
-This package will not handle what should be done after the webhook request has been validated and the right job or event is called. So you should still code up any work regarding eg payments yourself.
+This package will not handle what should be done after the webhook request has been validated and the right job or event is called. You should still code up any work regarding eg payments yourself.
 
 Before using this package we highly recommend reading [the entire documentation on webhooks over at Stripe](https://stripe.com/docs/webhooks).
 
