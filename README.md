@@ -7,7 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-stripe-webhooks)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
 
-[Stripe](https://stripe.com) can notify your application of events using webhooks. This package can help you handle those webhooks. Out of the box it will verify the stripe signature of all incoming requests. All valid calls will be logged to the database. You can easily define jobs or events that should be dispatched when specific events hit your app.
+[Stripe](https://stripe.com) can notify your application of events using webhooks. This package can help you handle those webhooks. Out of the box it will verify the Stripe signature of all incoming requests. All valid calls will be logged to the database. You can easily define jobs or events that should be dispatched when specific events hit your app.
 
 This package will not handle what should be done after the webhook request has been validated and the right job or event is called. You should still code up any work regarding eg payments yourself.
 
@@ -28,23 +28,23 @@ You must publish the config file with:
 php artisan vendor:publish --provider="Spatie\StripeWebhooks\StripeWebhooksServiceProvider" --tag="config"
 ```
 
-This is the contents of the config file that will be published at `config/stripe-webhooks.php`
+This is the contents of the config file that will be published at `config/stripe-webhooks.php`:
 
 ```php
 return [
 
     /*
-     * Stripe will sign webhooks using a secret. You can find the secret used at the webhook
-     * configuration settings: https://dashboard.stripe.com/account/webhooks
+     * Stripe will sign each webhook using a secret. You can find the used secret at the
+     * webhook configuration settings: https://dashboard.stripe.com/account/webhooks.
      */
     'signing_secret' => '',
 
     /*
-     * Here you can define the job that should be run when a certain webhook hits your .
-     * application. The key is name of stripe event type with the `.` replaced by `_`
+     * You can define the job that should be run when a certain webhook hits your application
+     * here. The key is the name of the Stripe event type with the `.` replaced by a `_`.
      *
-     * You can find a list of stripe webhook type here:
-     * https://stripe.com/docs/api#event_types
+     * You can find a list of Stripe webhook types here:
+     * https://stripe.com/docs/api#event_types.
      */
     'jobs' => [
         // 'source_chargeable' => \App\Jobs\StripeWebhooks\HandleChargeableSource::class,
@@ -52,15 +52,15 @@ return [
     ],
 
     /*
-     * The class name of the model to be used. The class should be or extend 
-     * Spatie\StripeWebhooks\StripeWebhookCall
+     * The classname of the model to be used. The class should equal or extend
+     * Spatie\StripeWebhooks\StripeWebhookCall.
      */
     'model' => Spatie\StripeWebhooks\StripeWebhookCall::class,
 ];
 
 ```
 
-In the `signing_secret` key of the config file you should add a valid webhook secret.  You can find the secret used at [the webhook configuration settings on the Stripe dashboard](https://dashboard.stripe.com/account/webhooks).
+In the `signing_secret` key of the config file you should add a valid webhook secret. You can find the secret used at [the webhook configuration settings on the Stripe dashboard](https://dashboard.stripe.com/account/webhooks).
 
 Next, you must publish the migration with:
 ```bash
@@ -79,7 +79,7 @@ The lasts steps take care of the routing. At [the Stripe dashboard](https://dash
 Route::stripeWebhooks('webhook-url-configured-at-the-stripe-dashboard')
 ```
 
-Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to `except` array of the `VerifyCsrfToken` middleware .
+Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to `except` array of the `VerifyCsrfToken` middleware.
 
 ```php
 protected $except = [
@@ -116,7 +116,7 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 
 class HandleChargeableSource implements ShouldQueue
 {
-     use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels;
     
     /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
     public $webhookCall;
@@ -137,7 +137,7 @@ class HandleChargeableSource implements ShouldQueue
 
 We highly recommend that you make this job queueable. By doing that, you can minimize the response time of the webhook requests. This allows you to handle more stripe webhook requests and avoiding timeouts.
 
-After having created your job you must register it at the `jobs` array in the `stripe-webhooks.php` config file. The key should be the name of [the stripe event type](https://stripe.com/docs/api#event_types) where but with the `.` replaced by `_`. The value should be the fully qualified name of the class.
+After having created your job you must register it at the `jobs` array in the `stripe-webhooks.php` config file. The key should be the name of [the stripe event type](https://stripe.com/docs/api#event_types) where but with the `.` replaced by `_`. The value should be the fully qualified classname.
 
 ```php
 // config/stripe-webhooks.php
@@ -149,11 +149,11 @@ After having created your job you must register it at the `jobs` array in the `s
 
 ### Handling webhook requests using events 
 
-Instead of queueing jobs to perform some work when a webhook request comes in, you can opt to listen to the events this package will fire. Whenever a valid request hits your app the package will fire a `stripe-webhooks::<name-of-the-event>`. For if a `source.chargeable` event hits your app, the `stripe-webhooks::
+Instead of queueing jobs to perform some work when a webhook request comes in, you can opt to listen to the events this package will fire. Whenever a valid request hits your app, the package will fire a `stripe-webhooks::<name-of-the-event>` event.
 
 The payload of the events will be the instance of `StripeWebhookCall` that was created for the incoming request. 
 
-Let's take a look at how you can listen for such an event. In the `EventServiceProvider` you can register a listener.
+Let's take a look at how you can listen for such an event. In the `EventServiceProvider` you can register listeners.
 
 ```php
 /**
@@ -189,7 +189,7 @@ class ChargeSource implements ShouldQueue
 }
 ```
 
-We highly recommend that you make the event listener queueable. By doing that, you can minimize the response time of the webhook requests. This allows you to handle more stripe webhook requests and avoiding timeouts.
+We highly recommend that you make the event listener queueable. By doing that, you can minimize the response time of the webhook requests. This allows you to handle more Stripe webhook requests and it avoids timeouts.
 
 The above example is only one way to handle events in a Laravel. To learn the other options, read [the Laravel documentation on handling events](https://laravel.com/docs/5.5/events). 
 
@@ -197,7 +197,7 @@ The above example is only one way to handle events in a Laravel. To learn the ot
 
 ### Retrying handling a webhook
 
-All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong handling a webhook call. You can easily retry processing the webhook call, after you investigated and fixed the cause of failure, like this:
+All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong while handling a webhook call. You can easily retry processing the webhook call, after you've investigated and fixed the cause of failure, like this:
 
 ```php
 use Spatie\StripeWebhooks\StripeWebhookCall;
@@ -207,7 +207,7 @@ StripeWebhookCall::find($id)->process();
 
 ### Performing custom logic
 
-You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specify your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`:
+You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specifying your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`:
 
 Here's an example:
 
