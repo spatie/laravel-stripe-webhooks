@@ -32,7 +32,7 @@ class StripeWebhookCall extends Model
         }
 
         if (! class_exists($jobClass)) {
-            throw WebhookFailed::jobClassDoesNotExist($this);
+            throw WebhookFailed::jobClassDoesNotExist($jobClass, $this);
         }
 
         dispatch(new $jobClass($this));
