@@ -44,7 +44,7 @@ class VerifySignatureTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertJson([
-                'error' => 'The request did not contain a header named `Stripe-Signature`',
+                'error' => 'The request did not contain a header named `Stripe-Signature`.',
             ]);
     }
 
