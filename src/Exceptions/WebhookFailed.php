@@ -9,7 +9,7 @@ class WebhookFailed extends Exception
 {
     public static function missingSignature()
     {
-        return new static('The request did not contain a header named `Stripe-Signature`');
+        return new static('The request did not contain a header named `Stripe-Signature`.');
     }
 
     public static function invalidSignature($signature)
@@ -24,7 +24,7 @@ class WebhookFailed extends Exception
 
     public static function jobClassDoesNotExist(string $jobClass, StripeWebhookCall $webhookCall)
     {
-        return new static("Could not process webhook id `{$webhookCall->id}` of type `{$webhookCall->type} because the configured jobclass `$jobClass` does not exist");
+        return new static("Could not process webhook id `{$webhookCall->id}` of type `{$webhookCall->type} because the configured jobclass `$jobClass` does not exist.");
     }
 
     public static function missingType(StripeWebhookCall $webhookCall)
