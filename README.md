@@ -181,7 +181,7 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 
 class ChargeSource implements ShouldQueue
 {
-    public function handle(StripeWebhookCall $call)
+    public function handle(StripeWebhookCall $webhookCall)
     {
         // do your work here
 
