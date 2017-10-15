@@ -73,17 +73,17 @@ After the migration has been published you can create the `stripe_webhook_calls`
 php artisan migrate
 ```
 
-Finally, take care of the routing: At [the Stripe dashboard](https://dashboard.stripe.com/account/webhooks) you must configure at what url Stripe webhooks should hit your app. In the routes file of your app you must pass that url to `Route::stripeWebhooks`:
+Finally, take care of the routing: At [the Stripe dashboard](https://dashboard.stripe.com/account/webhooks) you must configure at what url Stripe webhooks should hit your app. In the routes file of your app you must pass that route to `Route::stripeWebhooks`:
 
 ```php
-Route::stripeWebhooks('webhook-url-configured-at-the-stripe-dashboard')
+Route::stripeWebhooks('webhook-route-configured-at-the-stripe-dashboard'); 
 ```
 
-Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to `except` array of the `VerifyCsrfToken` middleware.
+Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
 
 ```php
 protected $except = [
-    'webhook-url-configured-at-the-stripe-dashboard',
+    'webhook-route-configured-at-the-stripe-dashboard',
 ];
 ```
 
