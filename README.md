@@ -1,4 +1,4 @@
-# Handle Stripe webhooks in a Laravel application
+# Handle Stripe Webhooks in a Laravel application
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
 [![Build Status](https://img.shields.io/travis/spatie/laravel-stripe-webhooks/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-stripe-webhooks)
@@ -9,7 +9,7 @@
 
 [Stripe](https://stripe.com) can notify your application of events using webhooks. This package can help you handle those webhooks. Out of the box it will verify the Stripe signature of all incoming requests. All valid calls will be logged to the database. You can easily define jobs or events that should be dispatched when specific events hit your app.
 
-This package will not handle what should be done after the webhook request has been validated and the right job or event is called. You should still code up any work regarding eg payments yourself.
+This package will not handle what should be done after the webhook request has been validated and the right job or event is called. You should still code up any work (eg. regarding payments) yourself.
 
 Before using this package we highly recommend reading [the entire documentation on webhooks over at Stripe](https://stripe.com/docs/webhooks).
 
@@ -73,17 +73,17 @@ After the migration has been published you can create the `stripe_webhook_calls`
 php artisan migrate
 ```
 
-The lasts steps take care of the routing. At [the Stripe dashboard](https://dashboard.stripe.com/account/webhooks) you must configure at what url Stripe webhooks should hit your app. In the routes file of your app you must pass that url to `Route::stripeWebhooks`:
+Finally, take care of the routing: At [the Stripe dashboard](https://dashboard.stripe.com/account/webhooks) you must configure at what url Stripe webhooks should hit your app. In the routes file of your app you must pass that route to `Route::stripeWebhooks`:
 
 ```php
-Route::stripeWebhooks('webhook-url-configured-at-the-stripe-dashboard')
+Route::stripeWebhooks('webhook-route-configured-at-the-stripe-dashboard'); 
 ```
 
-Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to `except` array of the `VerifyCsrfToken` middleware.
+Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
 
 ```php
 protected $except = [
-    'webhook-url-configured-at-the-stripe-dashboard',
+    'webhook-route-configured-at-the-stripe-dashboard',
 ];
 ```
 
@@ -91,17 +91,18 @@ protected $except = [
 
 Stripe will send out webhooks for several event types. You can find the [full list of events types](https://stripe.com/docs/api#event_types) in the Stripe documentation.
 
-Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent be Stripe. The request will not be logged in the `stripe_webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
+Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent by Stripe.
  
 Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
 
+If the signature is not valid, the request will not be logged in the `stripe_webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
 If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`. 
  
 There are two ways this package enables you to handle webhook requests: you can opt to queue a job or listen to the events the package will fire.
  
  
 ### Handling webhook requests using jobs 
-If you want to do something when a specific event type comes in you can define a job that does the work. Here's an example of such a job.
+If you want to do something when a specific event type comes in you can define a job that does the work. Here's an example of such a job:
 
 ```php
 <?php
@@ -135,7 +136,7 @@ class HandleChargeableSource implements ShouldQueue
 }
 ```
 
-We highly recommend that you make this job queueable. By doing that, you can minimize the response time of the webhook requests. This allows you to handle more stripe webhook requests and avoiding timeouts.
+We highly recommend that you make this job queueable, because this will minimize the response time of the webhook requests. This allows you to handle more stripe webhook requests and avoid timeouts.
 
 After having created your job you must register it at the `jobs` array in the `stripe-webhooks.php` config file. The key should be the name of [the stripe event type](https://stripe.com/docs/api#event_types) where but with the `.` replaced by `_`. The value should be the fully qualified classname.
 
@@ -147,7 +148,7 @@ After having created your job you must register it at the `jobs` array in the `s
 ],
 ```
 
-### Handling webhook requests using events 
+### Handling webhook requests using events
 
 Instead of queueing jobs to perform some work when a webhook request comes in, you can opt to listen to the events this package will fire. Whenever a valid request hits your app, the package will fire a `stripe-webhooks::<name-of-the-event>` event.
 
@@ -180,7 +181,7 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 
 class ChargeSource implements ShouldQueue
 {
-    public function handle(StripeWebhookCall $call)
+    public function handle(StripeWebhookCall $webhookCall)
     {
         // do your work here
 
@@ -189,15 +190,15 @@ class ChargeSource implements ShouldQueue
 }
 ```
 
-We highly recommend that you make the event listener queueable. By doing that, you can minimize the response time of the webhook requests. This allows you to handle more Stripe webhook requests and it avoids timeouts.
+We highly recommend that you make the event listener queueable, as this will minimize the response time of the webhook requests. This allows you to handle more Stripe webhook requests and avoid timeouts.
 
-The above example is only one way to handle events in a Laravel. To learn the other options, read [the Laravel documentation on handling events](https://laravel.com/docs/5.5/events). 
+The above example is only one way to handle events in Laravel. To learn the other options, read [the Laravel documentation on handling events](https://laravel.com/docs/5.5/events). 
 
 ## Advanced usage
 
-### Retrying handling a webhook
+### Retry handling a webhook
 
-All incoming webhook requests are written to the database. This is incredibly valueable when something goes wrong while handling a webhook call. You can easily retry processing the webhook call, after you've investigated and fixed the cause of failure, like this:
+All incoming webhook requests are written to the database. This is incredibly valuable when something goes wrong while handling a webhook call. You can easily retry processing the webhook call, after you've investigated and fixed the cause of failure, like this:
 
 ```php
 use Spatie\StripeWebhooks\StripeWebhookCall;
@@ -207,7 +208,7 @@ StripeWebhookCall::find($id)->process();
 
 ### Performing custom logic
 
-You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specifying your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`:
+You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specifying your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`.
 
 Here's an example:
 
@@ -233,7 +234,7 @@ class MyCustomWebhookCall extends StripeWebhookCall
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.
 
 ## Testing
 
