@@ -107,7 +107,7 @@ If you want to do something when a specific event type comes in you can define a
 ```php
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\StripeWebhooks;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
