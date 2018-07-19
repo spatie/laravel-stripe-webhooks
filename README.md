@@ -3,7 +3,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
 [![Build Status](https://img.shields.io/travis/spatie/laravel-stripe-webhooks/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-stripe-webhooks)
 [![StyleCI](https://styleci.io/repos/105920179/shield?branch=master)](https://styleci.io/repos/105920179)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/a027b103-772c-4dbc-a2a4-a6ccc07e127f.svg?style=flat-square)](https://insight.sensiolabs.com/projects/a027b103-772c-4dbc-a2a4-a6ccc07e127f)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-stripe-webhooks)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
 
