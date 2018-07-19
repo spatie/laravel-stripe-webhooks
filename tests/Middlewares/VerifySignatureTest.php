@@ -64,7 +64,6 @@ class VerifySignatureTest extends TestCase
             ->assertSee('The Stripe webhook signing secret is not set');
     }
 
-
     /** @test */
     public function it_will_fail_when_the_signature_is_invalid()
     {
