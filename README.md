@@ -75,7 +75,7 @@ php artisan migrate
 Finally, take care of the routing: At [the Stripe dashboard](https://dashboard.stripe.com/account/webhooks) you must configure at what url Stripe webhooks should hit your app. In the routes file of your app you must pass that route to `Route::stripeWebhooks`:
 
 ```php
-Route::stripeWebhooks('webhook-route-configured-at-the-stripe-dashboard'); 
+Route::stripeWebhooks('webhook-route-configured-at-the-stripe-dashboard');
 ```
 
 Behind the scenes this will register a `POST` route to a controller provided by this package. Because Stripe has no way of getting a csrf-token, you must add that route to the `except` array of the `VerifyCsrfToken` middleware:
@@ -91,16 +91,16 @@ protected $except = [
 Stripe will send out webhooks for several event types. You can find the [full list of events types](https://stripe.com/docs/api#event_types) in the Stripe documentation.
 
 Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent by Stripe.
- 
+
 Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
 
 If the signature is not valid, the request will not be logged in the `stripe_webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
-If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`. 
- 
+If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`.
+
 There are two ways this package enables you to handle webhook requests: you can opt to queue a job or listen to the events the package will fire.
- 
- 
-### Handling webhook requests using jobs 
+
+
+### Handling webhook requests using jobs
 If you want to do something when a specific event type comes in you can define a job that does the work. Here's an example of such a job:
 
 ```php
@@ -117,7 +117,7 @@ use Spatie\StripeWebhooks\StripeWebhookCall;
 class HandleChargeableSource implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
-    
+
     /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
     public $webhookCall;
 
@@ -129,7 +129,7 @@ class HandleChargeableSource implements ShouldQueue
     public function handle()
     {
         // do your work here
-        
+
         // you can access the payload of the webhook call with `$this->webhookCall->payload`
     }
 }
@@ -151,7 +151,7 @@ After having created your job you must register it at the `jobs` array in the `s
 
 Instead of queueing jobs to perform some work when a webhook request comes in, you can opt to listen to the events this package will fire. Whenever a valid request hits your app, the package will fire a `stripe-webhooks::<name-of-the-event>` event.
 
-The payload of the events will be the instance of `StripeWebhookCall` that was created for the incoming request. 
+The payload of the events will be the instance of `StripeWebhookCall` that was created for the incoming request.
 
 Let's take a look at how you can listen for such an event. In the `EventServiceProvider` you can register listeners.
 
@@ -185,13 +185,13 @@ class ChargeSource implements ShouldQueue
         // do your work here
 
         // you can access the payload of the webhook call with `$webhookCall->payload`
-    }   
+    }
 }
 ```
 
 We highly recommend that you make the event listener queueable, as this will minimize the response time of the webhook requests. This allows you to handle more Stripe webhook requests and avoid timeouts.
 
-The above example is only one way to handle events in Laravel. To learn the other options, read [the Laravel documentation on handling events](https://laravel.com/docs/5.5/events). 
+The above example is only one way to handle events in Laravel. To learn the other options, read [the Laravel documentation on handling events](https://laravel.com/docs/5.5/events).
 
 ## Advanced usage
 
@@ -219,12 +219,32 @@ class MyCustomWebhookCall extends StripeWebhookCall
     public function process()
     {
         // do some custom stuff beforehand
-        
+
         parent::process();
-        
+
         // do some custom stuff afterwards
     }
 }
+```
+### Multiple Signing Secrets (Connect Usage)
+
+You can configure stripe-webhooks to handle multiple endpoints and secrets.
+
+First add a route which includes the parameter `configKey`:
+
+```php
+Route::post('webhook-url/{configKey}', 'Spatie\StripeWebhooks\StripeWebhooksController');
+```
+
+If this route parameter is present the verify middleware will look for the secret using a different config key, by appending the given the parameter value to the default config key. E.g. If Stripe posts to `webhook-url/my-named-secret` you'd add a new config named `signing_secret_my-named-secret`.
+
+Example config for Connect might look like:
+
+```php
+// secret for when Stripe posts to webhook-url/account
+'signing_secret_account' => 'whsec_abc',
+// secret for when Stripe posts to webhook-url/connect
+'signing_secret_connect' => 'whsec_123',
 ```
 
 ### About Cashier
@@ -268,7 +288,7 @@ A big thank you to [Sebastiaan Luca](https://twitter.com/sebastiaanluca) who gen
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie).
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
