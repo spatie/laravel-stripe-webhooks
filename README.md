@@ -226,9 +226,9 @@ class MyCustomWebhookCall extends StripeWebhookCall
     }
 }
 ```
-### Multiple Signing Secrets (Connect Usage)
+### Handling multiple signing secrets
 
-You can configure stripe-webhooks to handle multiple endpoints and secrets.
+When using [Stripe Connect](https://stripe.com/connect) you might want to the package to handle multiple endpoints and secrets. Here's how to configurate that behaviour.
 
 First add a route which includes the parameter `configKey`:
 

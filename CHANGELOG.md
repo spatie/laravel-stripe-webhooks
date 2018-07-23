@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 1.1.0 - 2018-07-23
+
+- add support for Stripe Connect
+
 ## 1.0.3 - 2018-02-17
 
 - add support for stripe api v6
