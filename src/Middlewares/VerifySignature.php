@@ -17,16 +17,18 @@ class VerifySignature
             throw WebhookFailed::missingSignature();
         }
 
-        if (! $this->isValid($signature, $request->getContent())) {
+        if (! $this->isValid($signature, $request->getContent(), $request->route('configKey'))) {
             throw WebhookFailed::invalidSignature($signature);
         }
 
         return $next($request);
     }
 
-    protected function isValid(string $signature, string $payload): bool
+    protected function isValid(string $signature, string $payload, string $configKey = null): bool
     {
-        $secret = config('stripe-webhooks.signing_secret');
+        $secret = ($configKey) ?
+            config('stripe-webhooks.signing_secret_'.$configKey) :
+            config('stripe-webhooks.signing_secret');
 
         if (empty($secret)) {
             throw WebhookFailed::signingSecretNotSet();

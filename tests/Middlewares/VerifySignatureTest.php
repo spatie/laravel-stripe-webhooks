@@ -12,7 +12,7 @@ class VerifySignatureTest extends TestCase
     {
         parent::setUp();
 
-        Route::post('stripe-webhooks', function () {
+        Route::post('stripe-webhooks/{configKey?}', function () {
             return 'ok';
         })->middleware(VerifySignature::class);
     }
@@ -76,5 +76,39 @@ class VerifySignatureTest extends TestCase
         $response
             ->assertStatus(400)
             ->assertSee('found in the header named `Stripe-Signature` is invalid');
+    }
+
+    /** @test */
+    public function it_will_succeed_when_using_a_named_config_key()
+    {
+        config(['stripe-webhooks.signing_secret_named' => 'test_signing_secret']);
+
+        $payload = ['event' => 'source.chargeable'];
+
+        $response = $this->postJson(
+            'stripe-webhooks/named',
+            $payload,
+            ['Stripe-Signature' => $this->determineStripeSignature($payload)]
+        );
+
+        $response
+            ->assertStatus(200)
+            ->assertSee('ok');
+    }
+
+    /** @test */
+    public function it_will_fail_when_the_named_signing_secret_is_not_set()
+    {
+        config(['stripe-webhooks.signing_secret_named' => '']);
+
+        $response = $this->postJson(
+            'stripe-webhooks/named',
+            ['event' => 'source.chargeable'],
+            ['Stripe-Signature' => 'abc']
+        );
+
+        $response
+            ->assertStatus(400)
+            ->assertSee('The Stripe webhook signing secret is not set');
     }
 }
