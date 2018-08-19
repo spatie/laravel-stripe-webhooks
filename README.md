@@ -233,7 +233,7 @@ When using [Stripe Connect](https://stripe.com/connect) you might want to the pa
 First add a route which includes the parameter `configKey`:
 
 ```php
-Route::post('webhook-url/{configKey}', 'Spatie\StripeWebhooks\StripeWebhooksController');
+Route::stripeWebhooks('webhook-url/{configKey}', 'Spatie\StripeWebhooks\StripeWebhooksController');
 ```
 
 If this route parameter is present the verify middleware will look for the secret using a different config key, by appending the given the parameter value to the default config key. E.g. If Stripe posts to `webhook-url/my-named-secret` you'd add a new config named `signing_secret_my-named-secret`.
