@@ -230,7 +230,13 @@ class MyCustomWebhookCall extends StripeWebhookCall
 
 When using [Stripe Connect](https://stripe.com/connect) you might want to the package to handle multiple endpoints and secrets. Here's how to configurate that behaviour.
 
-First add a route which includes the parameter `configKey`:
+If you are using the `Route::stripeWebhooks` macro, you can append the `configKey` as follows:
+
+```php
+Route::stripeWebhooks('webhook-url/{configKey}');
+```
+
+Alternatively, if you are manually defining the route, you can add `configKey` like so:
 
 ```php
 Route::post('webhook-url/{configKey}', 'Spatie\StripeWebhooks\StripeWebhooksController');
