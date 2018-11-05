@@ -33,6 +33,6 @@ class StripeWebhooksController extends Controller
             throw $exception;
         }
 
-        return response()->json(['message' => 'Webhook Handled']);
+        return response()->json(['message' => 'ok']);
     }
 }
