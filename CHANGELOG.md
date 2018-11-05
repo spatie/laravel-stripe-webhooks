@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+
+## 1.1.2 - 2018-08-29
+
+- send a response in the controller
+
 ## 1.1.1 - 2018-08-29
 
 - add support for Laravel 5.7
