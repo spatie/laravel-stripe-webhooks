@@ -8,7 +8,7 @@ use Spatie\StripeWebhooks\Middlewares\VerifySignature;
 
 class VerifySignatureTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

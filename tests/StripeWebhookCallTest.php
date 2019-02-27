@@ -12,7 +12,7 @@ class StripeWebhookCallTest extends TestCase
     /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
     public $stripeWebhookCall;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

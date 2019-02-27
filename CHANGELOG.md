@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 1.1.4 - 2018-02-27
+
+- add support for Laravel 5.8
+
 ## 1.1.3 - 2018-11-03
 
 - use `STRIPE_WEBHOOK_SECRET` env variable
