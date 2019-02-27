@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 1.2.0 - 2018-02-27
+
+- drop support for Laravel 5.7 and below
+- drop support for PHP 7.1 and below
+
 ## 1.1.4 - 2018-02-27
 
 - add support for Laravel 5.8
