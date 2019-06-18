@@ -15,16 +15,8 @@ class StripeWebhooksServiceProvider extends ServiceProvider
             ], 'config');
         }
 
-        if (! class_exists('CreateStripeWebhookCallsTable')) {
-            $timestamp = date('Y_m_d_His', time());
-
-            $this->publishes([
-                __DIR__.'/../database/migrations/create_stripe_webhook_calls_table.php.stub' => database_path('migrations/'.$timestamp.'_create_stripe_webhook_calls_table.php'),
-            ], 'migrations');
-        }
-
         Route::macro('stripeWebhooks', function ($url) {
-            return Route::post($url, '\Spatie\StripeWebhooks\StripeWebhooksController');
+            return Route::post($url, StripeWebhooksController::class);
         });
     }
 

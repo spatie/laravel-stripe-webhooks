@@ -2,36 +2,29 @@
 
 namespace Spatie\StripeWebhooks;
 
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Spatie\StripeWebhooks\Middlewares\VerifySignature;
+use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\WebhookProcessor;
+use Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile;
 
-class StripeWebhooksController extends Controller
+class StripeWebhooksController
 {
-    public function __construct()
+    public function __invoke(Request $request, string $configKey = null)
     {
-        $this->middleware(VerifySignature::class);
-    }
-
-    public function __invoke(Request $request)
-    {
-        $eventPayload = $request->input();
-
-        $modelClass = config('stripe-webhooks.model');
-
-        $stripeWebhookCall = $modelClass::create([
-            'type' =>  $eventPayload['type'] ?? '',
-            'payload' => $eventPayload,
+        $webhookConfig = new WebhookConfig([
+            'name' => 'stripe',
+            'signing_secret' => ($configKey) ?
+                config('stripe-webhooks.signing_secret_'.$configKey) :
+                config('stripe-webhooks.signing_secret'),
+            'signature_header_name' => 'Stripe-Signature',
+            'signature_validator' => StripeSignatureValidator::class,
+            'webhook_profile' => ProcessEverythingWebhookProfile::class,
+            'webhook_model' => WebhookCall::class,
+            'process_webhook_job' => config('stripe-webhooks.model'),
         ]);
 
-        try {
-            $stripeWebhookCall->process();
-        } catch (Exception $exception) {
-            $stripeWebhookCall->saveException($exception);
-
-            throw $exception;
-        }
+        (new WebhookProcessor($request, $webhookConfig))->process();
 
         return response()->json(['message' => 'ok']);
     }

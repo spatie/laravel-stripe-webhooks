@@ -2,40 +2,40 @@
 
 namespace Spatie\StripeWebhooks\Tests;
 
-use Exception;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
+use Spatie\WebhookClient\Models\WebhookCall;
 
-class StripeWebhookCallTest extends TestCase
+class ProcessStripeWebhookJobTest extends TestCase
 {
-    /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
-    public $stripeWebhookCall;
+    /** @var \Spatie\StripeWebhooks\ProcessStripeWebhookJob */
+    public $processStripeWebhookJob;
+
+    /** @var \Spatie\WebhookClient\Models\WebhookCall */
+    public $webhookCall;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Bus::fake();
-
         Event::fake();
 
         config(['stripe-webhooks.jobs' => ['my_type' => DummyJob::class]]);
 
-        $this->stripeWebhookCall = StripeWebhookCall::create([
-            'type' => 'my.type',
-            'payload' => ['name' => 'value'],
+        $this->webhookCall = WebhookCall::create([
+            'name' => 'stripe',
+            'payload' => ['type' => 'my.type', 'name' => 'value'],
         ]);
+
+        $this->processStripeWebhookJob = new ProcessStripeWebhookJob($this->webhookCall);
     }
 
     /** @test */
     public function it_will_fire_off_the_configured_job()
     {
-        $this->stripeWebhookCall->process();
+        $this->processStripeWebhookJob->handle();
 
-        Bus::assertDispatched(DummyJob::class, function (DummyJob $job) {
-            return $job->stripeWebhookCall->id === $this->stripeWebhookCall->id;
-        });
+        $this->assertEquals($this->webhookCall->id, cache('dummyjob')->id);
     }
 
     /** @test */
@@ -43,9 +43,9 @@ class StripeWebhookCallTest extends TestCase
     {
         config(['stripe-webhooks.jobs' => ['another_type' => DummyJob::class]]);
 
-        $this->stripeWebhookCall->process();
+        $this->processStripeWebhookJob->handle();
 
-        Bus::assertNotDispatched(DummyJob::class);
+        $this->assertNull(cache('dummyjob'));
     }
 
     /** @test */
@@ -53,9 +53,9 @@ class StripeWebhookCallTest extends TestCase
     {
         config(['stripe-webhooks.jobs' => []]);
 
-        $this->stripeWebhookCall->process();
+        $this->processStripeWebhookJob->handle();
 
-        Bus::assertNotDispatched(DummyJob::class);
+        $this->assertNull(cache('dummyjob'));
     }
 
     /** @test */
@@ -63,36 +63,18 @@ class StripeWebhookCallTest extends TestCase
     {
         config(['stripe-webhooks.jobs' => ['another_type' => DummyJob::class]]);
 
-        $this->stripeWebhookCall->process();
+        $this->processStripeWebhookJob->handle();
 
-        $webhookCall = $this->stripeWebhookCall;
+        $webhookCall = $this->webhookCall;
 
-        Event::assertDispatched("stripe-webhooks::{$webhookCall->type}", function ($event, $eventPayload) use ($webhookCall) {
-            if (! $eventPayload instanceof StripeWebhookCall) {
+        Event::assertDispatched("stripe-webhooks::{$webhookCall->payload['type']}", function ($event, $eventPayload) use ($webhookCall) {
+            if (! $eventPayload instanceof WebhookCall) {
                 return false;
             }
 
             return $eventPayload->id === $webhookCall->id;
         });
-    }
 
-    /** @test */
-    public function it_can_save_an_exception()
-    {
-        $this->stripeWebhookCall->saveException(new Exception('my message', 123));
-
-        $this->assertEquals(123, $this->stripeWebhookCall->exception['code']);
-        $this->assertEquals('my message', $this->stripeWebhookCall->exception['message']);
-        $this->assertGreaterThan(200, strlen($this->stripeWebhookCall->exception['trace']));
-    }
-
-    /** @test */
-    public function processing_a_webhook_will_clear_the_exception()
-    {
-        $this->stripeWebhookCall->saveException(new Exception('my message', 123));
-
-        $this->stripeWebhookCall->process();
-
-        $this->assertNull($this->stripeWebhookCall->exception);
+        $this->assertNull(cache('dummyjob'));
     }
 }

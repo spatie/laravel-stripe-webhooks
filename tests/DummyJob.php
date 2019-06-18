@@ -2,19 +2,20 @@
 
 namespace Spatie\StripeWebhooks\Tests;
 
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class DummyJob
 {
-    /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
-    public $stripeWebhookCall;
+    /** @var \Spatie\WebhookClient\Models\WebhookCall */
+    public $webhookCall;
 
-    public function __construct(StripeWebhookCall $stripeWebhookCall)
+    public function __construct(WebhookCall $webhookCall)
     {
-        $this->stripeWebhookCall = $stripeWebhookCall;
+        $this->webhookCall = $webhookCall;
     }
 
     public function handle()
     {
+        cache()->put('dummyjob', $this->webhookCall);
     }
 }

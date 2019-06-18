@@ -36,9 +36,9 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function setUpDatabase()
     {
-        include_once __DIR__.'/../database/migrations/create_stripe_webhook_calls_table.php.stub';
+        include_once __DIR__.'/../vendor/spatie/laravel-webhook-client/database/migrations/create_webhook_calls_table.php.stub';
 
-        (new \CreateStripeWebhookCallsTable())->up();
+        (new \CreateWebhookCallsTable())->up();
     }
 
     /**
@@ -71,9 +71,11 @@ abstract class TestCase extends OrchestraTestCase
         });
     }
 
-    protected function determineStripeSignature(array $payload): string
+    protected function determineStripeSignature(array $payload, string $configKey = null): string
     {
-        $secret = config('stripe-webhooks.signing_secret');
+        $secret = ($configKey) ?
+            config('stripe-webhooks.signing_secret_'.$configKey) :
+            config('stripe-webhooks.signing_secret');
 
         $timestamp = time();
 

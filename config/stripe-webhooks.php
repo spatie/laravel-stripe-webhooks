@@ -22,7 +22,7 @@ return [
 
     /*
      * The classname of the model to be used. The class should equal or extend
-     * Spatie\StripeWebhooks\StripeWebhookCall.
+     * Spatie\StripeWebhooks\ProcessStripeWebhookJob.
      */
-    'model' => Spatie\StripeWebhooks\StripeWebhookCall::class,
+    'model' => \Spatie\StripeWebhooks\ProcessStripeWebhookJob::class,
 ];
