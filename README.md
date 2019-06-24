@@ -14,7 +14,7 @@ Before using this package we highly recommend reading [the entire documentation 
 
 ### Upgrading to 2.0
 
-Please see [UPGEADING](UPGEADING.md) for details.
+Please see [UPGRADING](UPGRADING.md) for details.
 
 ## Installation
 
