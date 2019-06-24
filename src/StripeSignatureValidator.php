@@ -1,14 +1,12 @@
 <?php
 
-
 namespace Spatie\StripeWebhooks;
 
-
 use Exception;
-use Illuminate\Http\Request;
-use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
-use Spatie\WebhookClient\WebhookConfig;
 use Stripe\Webhook;
+use Illuminate\Http\Request;
+use Spatie\WebhookClient\WebhookConfig;
+use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
 
 class StripeSignatureValidator implements SignatureValidator
 {

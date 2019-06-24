@@ -2,14 +2,14 @@
 
 namespace Spatie\StripeWebhooks;
 
-use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 use Spatie\WebhookClient\ProcessWebhookJob;
+use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
 
 class ProcessStripeWebhookJob extends ProcessWebhookJob
 {
     public function handle()
     {
-        if (!isset($this->webhookCall->payload['type']) || $this->webhookCall->payload['type'] === '') {
+        if (! isset($this->webhookCall->payload['type']) || $this->webhookCall->payload['type'] === '') {
             throw WebhookFailed::missingType($this->webhookCall);
         }
 
