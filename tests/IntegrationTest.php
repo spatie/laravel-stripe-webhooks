@@ -44,11 +44,10 @@ class IntegrationTest extends TestCase
         $this->assertNull($webhookCall->exception);
 
         Event::assertDispatched('stripe-webhooks::my.type', function ($event, $eventPayload) use ($webhookCall) {
-            if (! $eventPayload instanceof WebhookCall) {
-                return false;
-            }
+            $this->assertInstanceOf(WebhookCall::class, $eventPayload);
+            $this->assertEquals($webhookCall->id, $eventPayload->id);
 
-            return $eventPayload->id === $webhookCall->id;
+            return true;
         });
 
         $this->assertEquals($webhookCall->id, cache('dummyjob')->id);

@@ -68,11 +68,10 @@ class StripeWebhookCallTest extends TestCase
         $webhookCall = $this->webhookCall;
 
         Event::assertDispatched("stripe-webhooks::{$webhookCall->payload['type']}", function ($event, $eventPayload) use ($webhookCall) {
-            if (! $eventPayload instanceof WebhookCall) {
-                return false;
-            }
+            $this->assertInstanceOf(WebhookCall::class, $eventPayload);
+            $this->assertEquals($webhookCall->id, $eventPayload->id);
 
-            return $eventPayload->id === $webhookCall->id;
+            return true;
         });
 
         $this->assertNull(cache('dummyjob'));
