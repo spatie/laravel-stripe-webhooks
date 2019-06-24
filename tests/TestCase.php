@@ -2,6 +2,7 @@
 
 namespace Spatie\StripeWebhooks\Tests;
 
+use CreateWebhookCallsTable;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -38,7 +39,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         include_once __DIR__.'/../vendor/spatie/laravel-webhook-client/database/migrations/create_webhook_calls_table.php.stub';
 
-        (new \CreateWebhookCallsTable())->up();
+        (new CreateWebhookCallsTable())->up();
     }
 
     /**
@@ -74,7 +75,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function determineStripeSignature(array $payload, string $configKey = null): string
     {
         $secret = ($configKey) ?
-            config('stripe-webhooks.signing_secret_'.$configKey) :
+            config("stripe-webhooks.signing_secret_{$configKey}") :
             config('stripe-webhooks.signing_secret');
 
         $timestamp = time();
