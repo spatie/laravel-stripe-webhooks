@@ -2,10 +2,9 @@
 
 namespace Spatie\StripeWebhooks\Tests;
 
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class IntegrationTest extends TestCase
 {
@@ -15,11 +14,11 @@ class IntegrationTest extends TestCase
 
         Event::fake();
 
-        Bus::fake();
-
         Route::stripeWebhooks('stripe-webhooks');
+        Route::stripeWebhooks('stripe-webhooks/{configKey}');
 
         config(['stripe-webhooks.jobs' => ['my_type' => DummyJob::class]]);
+        cache()->clear();
     }
 
     /** @test */
@@ -36,25 +35,23 @@ class IntegrationTest extends TestCase
             ->postJson('stripe-webhooks', $payload, $headers)
             ->assertSuccessful();
 
-        $this->assertCount(1, StripeWebhookCall::get());
+        $this->assertCount(1, WebhookCall::get());
 
-        $webhookCall = StripeWebhookCall::first();
+        $webhookCall = WebhookCall::first();
 
-        $this->assertEquals('my.type', $webhookCall->type);
+        $this->assertEquals('my.type', $webhookCall->payload['type']);
         $this->assertEquals($payload, $webhookCall->payload);
         $this->assertNull($webhookCall->exception);
 
         Event::assertDispatched('stripe-webhooks::my.type', function ($event, $eventPayload) use ($webhookCall) {
-            if (! $eventPayload instanceof StripeWebhookCall) {
+            if (! $eventPayload instanceof WebhookCall) {
                 return false;
             }
 
             return $eventPayload->id === $webhookCall->id;
         });
 
-        Bus::assertDispatched(DummyJob::class, function (DummyJob $job) use ($webhookCall) {
-            return $job->stripeWebhookCall->id === $webhookCall->id;
-        });
+        $this->assertEquals($webhookCall->id, cache('dummyjob')->id);
     }
 
     /** @test */
@@ -69,13 +66,13 @@ class IntegrationTest extends TestCase
 
         $this
             ->postJson('stripe-webhooks', $payload, $headers)
-            ->assertStatus(400);
+            ->assertStatus(500);
 
-        $this->assertCount(0, StripeWebhookCall::get());
+        $this->assertCount(0, WebhookCall::get());
 
         Event::assertNotDispatched('stripe-webhooks::my.type');
 
-        Bus::assertNotDispatched(DummyJob::class);
+        $this->assertNull(cache('dummyjob'));
     }
 
     /** @test */
@@ -89,16 +86,35 @@ class IntegrationTest extends TestCase
             ->postJson('stripe-webhooks', $payload, $headers)
             ->assertStatus(400);
 
-        $this->assertCount(1, StripeWebhookCall::get());
+        $this->assertCount(1, WebhookCall::get());
 
-        $webhookCall = StripeWebhookCall::first();
+        $webhookCall = WebhookCall::first();
 
-        $this->assertEquals('', $webhookCall->type);
+        $this->assertFalse(isset($webhookCall->payload['type']));
         $this->assertEquals(['invalid_payload'], $webhookCall->payload);
+
         $this->assertEquals('Webhook call id `1` did not contain a type. Valid Stripe webhook calls should always contain a type.', $webhookCall->exception['message']);
 
         Event::assertNotDispatched('stripe-webhooks::my.type');
 
-        Bus::assertNotDispatched(DummyJob::class);
+        $this->assertNull(cache('dummyjob'));
+    }
+
+    /** @test * */
+    public function a_request_with_a_config_key_will_use_the_correct_signing_secret()
+    {
+        config()->set('stripe-webhooks.signing_secret', 'secret1');
+        config()->set('stripe-webhooks.signing_secret_somekey', 'secret2');
+
+        $payload = [
+            'type' => 'my.type',
+            'key' => 'value',
+        ];
+
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload, 'somekey')];
+
+        $this
+            ->postJson('stripe-webhooks/somekey', $payload, $headers)
+            ->assertSuccessful();
     }
 }

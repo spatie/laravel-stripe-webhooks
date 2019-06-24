@@ -52,9 +52,9 @@ return [
 
     /*
      * The classname of the model to be used. The class should equal or extend
-     * Spatie\StripeWebhooks\StripeWebhookCall.
+     * Spatie\StripeWebhooks\ProcessStripeWebhookJob.
      */
-    'model' => Spatie\StripeWebhooks\StripeWebhookCall::class,
+    'model' => \Spatie\StripeWebhooks\ProcessStripeWebhookJob::class,
 ];
 
 ```
@@ -63,10 +63,10 @@ In the `signing_secret` key of the config file you should add a valid webhook se
 
 Next, you must publish the migration with:
 ```bash
-php artisan vendor:publish --provider="Spatie\StripeWebhooks\StripeWebhooksServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Spatie\WebhookClient\WebhookClientServiceProvider" --tag="migrations"
 ```
 
-After the migration has been published you can create the `stripe_webhook_calls` table by running the migrations:
+After the migration has been published you can create the `webhook_calls` table by running the migrations:
 
 ```bash
 php artisan migrate
@@ -92,9 +92,9 @@ Stripe will send out webhooks for several event types. You can find the [full li
 
 Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent by Stripe.
 
-Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. All webhook requests with a valid signature will be logged in the `stripe_webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
+Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. All webhook requests with a valid signature will be logged in the `webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
 
-If the signature is not valid, the request will not be logged in the `stripe_webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
+If the signature is not valid, the request will not be logged in the `webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
 If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`.
 
 There are two ways this package enables you to handle webhook requests: you can opt to queue a job or listen to the events the package will fire.
@@ -112,16 +112,16 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class HandleChargeableSource implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @var \Spatie\StripeWebhooks\StripeWebhookCall */
+    /** @var \Spatie\WebhookClient\Models\WebhookCall */
     public $webhookCall;
 
-    public function __construct(StripeWebhookCall $webhookCall)
+    public function __construct(WebhookCall $webhookCall)
     {
         $this->webhookCall = $webhookCall;
     }
@@ -151,7 +151,7 @@ After having created your job you must register it at the `jobs` array in the `s
 
 Instead of queueing jobs to perform some work when a webhook request comes in, you can opt to listen to the events this package will fire. Whenever a valid request hits your app, the package will fire a `stripe-webhooks::<name-of-the-event>` event.
 
-The payload of the events will be the instance of `StripeWebhookCall` that was created for the incoming request.
+The payload of the events will be the instance of `WebhookCall` that was created for the incoming request.
 
 Let's take a look at how you can listen for such an event. In the `EventServiceProvider` you can register listeners.
 
@@ -176,11 +176,11 @@ Here's an example of such a listener:
 namespace App\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class ChargeSource implements ShouldQueue
 {
-    public function handle(StripeWebhookCall $webhookCall)
+    public function handle(WebhookCall $webhookCall)
     {
         // do your work here
 
@@ -200,27 +200,28 @@ The above example is only one way to handle events in Laravel. To learn the othe
 All incoming webhook requests are written to the database. This is incredibly valuable when something goes wrong while handling a webhook call. You can easily retry processing the webhook call, after you've investigated and fixed the cause of failure, like this:
 
 ```php
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 
-StripeWebhookCall::find($id)->process();
+dispatch(new ProcessStripeWebhookJob(WebhookCall::find($id)));
 ```
 
 ### Performing custom logic
 
-You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specifying your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\StripeWebhookCall`.
+You can add some custom logic that should be executed before and/or after the scheduling of the queued job by using your own model. You can do this by specifying your own model in the `model` key of the `stripe-webhooks` config file. The class should extend `Spatie\StripeWebhooks\ProcessStripeWebhookJob`.
 
 Here's an example:
 
 ```php
-use Spatie\StripeWebhooks\StripeWebhookCall;
+use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 
-class MyCustomWebhookCall extends StripeWebhookCall
+class MyCustomStripeWebhookJob extends ProcessStripeWebhookJob
 {
-    public function process()
+    public function handle()
     {
         // do some custom stuff beforehand
 
-        parent::process();
+        parent::handle();
 
         // do some custom stuff afterwards
     }
