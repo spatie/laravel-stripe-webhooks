@@ -3,10 +3,10 @@
 namespace Spatie\StripeWebhooks\Tests;
 
 use Illuminate\Support\Facades\Event;
-use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 
-class ProcessStripeWebhookJobTest extends TestCase
+class StripeWebhookCallTest extends TestCase
 {
     /** @var \Spatie\StripeWebhooks\ProcessStripeWebhookJob */
     public $processStripeWebhookJob;
