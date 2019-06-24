@@ -203,7 +203,7 @@ All incoming webhook requests are written to the database. This is incredibly va
 use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 
-dispatch(ProcessStripeWebhookJob(WebhookCall::find($id)));
+dispatch(new ProcessStripeWebhookJob(WebhookCall::find($id)));
 ```
 
 ### Performing custom logic
