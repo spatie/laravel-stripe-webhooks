@@ -12,6 +12,10 @@ This package will not handle what should be done after the webhook request has b
 
 Before using this package we highly recommend reading [the entire documentation on webhooks over at Stripe](https://stripe.com/docs/webhooks).
 
+### Upgrading to 2.0
+
+Please see [UPGEADING](UPGEADING.md) for details.
+
 ## Installation
 
 You can install the package via composer:
