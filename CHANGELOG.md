@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 2.2.0 - 2019-09-04
+
+- Add Laravel 6 support
+
 ## 2.1.0 - 2019-07-08
 
 - upgrade spatie/laravel-webhook-client from v1 to v2
