@@ -24,6 +24,8 @@ class IntegrationTest extends TestCase
     /** @test */
     public function it_can_handle_a_valid_request()
     {
+        $this->withoutExceptionHandling();
+
         $payload = [
             'type' => 'my.type',
             'key' => 'value',
