@@ -3,8 +3,8 @@
 namespace Spatie\StripeWebhooks\Tests;
 
 use Illuminate\Support\Facades\Event;
-use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class StripeWebhookCallTest extends TestCase
 {
