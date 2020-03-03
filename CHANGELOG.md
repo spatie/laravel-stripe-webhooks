@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 2.3.0 - 2020-03-03
+
+- Add Laravel 7 support
+
 ## 2.2.1 - 2019-09-04
 
 - Allow Stripe 7.x
