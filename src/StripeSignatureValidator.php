@@ -3,10 +3,10 @@
 namespace Spatie\StripeWebhooks;
 
 use Exception;
-use Stripe\Webhook;
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\WebhookConfig;
 use Spatie\WebhookClient\SignatureValidator\SignatureValidator;
+use Spatie\WebhookClient\WebhookConfig;
+use Stripe\Webhook;
 
 class StripeSignatureValidator implements SignatureValidator
 {
