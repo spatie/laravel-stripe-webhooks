@@ -1,7 +1,7 @@
 # Handle Stripe Webhooks in a Laravel application
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
-[![Build Status](https://img.shields.io/travis/spatie/laravel-stripe-webhooks/master.svg?style=flat-square)](https://travis-ci.org/spatie/laravel-stripe-webhooks)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/spatie/laravel-stripe-webhooks/run-tests?label=tests)
 [![StyleCI](https://styleci.io/repos/105920179/shield?branch=master)](https://styleci.io/repos/105920179)
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-stripe-webhooks)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
@@ -15,6 +15,12 @@ Before using this package we highly recommend reading [the entire documentation 
 ### Upgrading to 2.0
 
 Please see [UPGRADING](UPGRADING.md) for details.
+
+## Support us
+
+We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us). 
+
+We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
 ## Installation
 
@@ -280,27 +286,12 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
 
-## Postcardware
-
-You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
-
-Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
-
-We publish all received postcards [on our company website](https://spatie.be/en/opensource/postcards).
-
 ## Credits
 
 - [Freek Van der Herten](https://github.com/freekmurze)
 - [All Contributors](../../contributors)
 
 A big thank you to [Sebastiaan Luca](https://twitter.com/sebastiaanluca) who generously shared his Stripe webhook solution that inspired this package.
-
-## Support us
-
-Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
-
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie).
-All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
 
