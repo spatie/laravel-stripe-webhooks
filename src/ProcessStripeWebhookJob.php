@@ -2,8 +2,8 @@
 
 namespace Spatie\StripeWebhooks;
 
-use Spatie\WebhookClient\ProcessWebhookJob;
 use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
+use Spatie\WebhookClient\ProcessWebhookJob;
 
 class ProcessStripeWebhookJob extends ProcessWebhookJob
 {
