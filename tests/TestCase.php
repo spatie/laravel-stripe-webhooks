@@ -27,9 +27,9 @@ abstract class TestCase extends OrchestraTestCase
     {
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
 
         config(['stripe-webhooks.signing_secret' => 'test_signing_secret']);
