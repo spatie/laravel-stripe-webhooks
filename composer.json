@@ -20,12 +20,12 @@
     "require": {
         "php": "^8.0|^7.4",
         "illuminate/support": "^6.0|^7.0|^8.0",
-        "spatie/laravel-webhook-client": "^2.0",
+        "spatie/laravel-webhook-client": "^2.7.4",
         "stripe/stripe-php": "^5.2|^6.0|^7.0|^7.51"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0|^5.0|^6.0",
-        "phpunit/phpunit": "^8.2|^9.3"
+        "phpunit/phpunit": "^9.3"
     },
     "autoload": {
         "psr-4": {
