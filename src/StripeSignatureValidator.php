@@ -12,7 +12,7 @@ class StripeSignatureValidator implements SignatureValidator
 {
     public function isValid(Request $request, WebhookConfig $config): bool
     {
-        if(!config('stripe-webhooks.verify_signature')){
+        if (! config('stripe-webhooks.verify_signature')) {
             return true;
         }
         
