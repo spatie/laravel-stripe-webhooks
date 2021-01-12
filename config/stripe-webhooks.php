@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'verify_signature' => env('STRIPE_SIGNATURE_VERIFY', true),
 
     /*
      * Stripe will sign each webhook using a secret. You can find the used secret at the
