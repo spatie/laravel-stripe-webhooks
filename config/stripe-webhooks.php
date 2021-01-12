@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
      * Stripe will sign each webhook using a secret. You can find the used secret at the
      * webhook configuration settings: https://dashboard.stripe.com/account/webhooks.
@@ -25,4 +24,10 @@ return [
      * Spatie\StripeWebhooks\ProcessStripeWebhookJob.
      */
     'model' => \Spatie\StripeWebhooks\ProcessStripeWebhookJob::class,
+    
+    /*
+     * When disabled, the package will not verify if the signature is valid.
+     * This can be handy in local environments.
+     */
+    'verify_signature' => env('STRIPE_SIGNATURE_VERIFY', true),
 ];

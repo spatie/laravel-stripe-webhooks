@@ -56,6 +56,81 @@ class IntegrationTest extends TestCase
     }
 
     /** @test */
+    public function a_request_with_invalid_signature_with_verification_disabled_will_pass()
+    {
+        config(['stripe-webhooks.verify_signature' => false]);
+        cache()->clear();
+
+        $this->withoutExceptionHandling();
+
+        $payload = [
+            'type' => 'my.type',
+            'key' => 'value',
+        ];
+
+        $headers = ['Stripe-Signature' => 'invalid signature'];
+
+        $this
+            ->postJson('stripe-webhooks', $payload, $headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+
+        $webhookCall = WebhookCall::first();
+
+        $this->assertEquals('my.type', $webhookCall->payload['type']);
+        $this->assertEquals($payload, $webhookCall->payload);
+        $this->assertNull($webhookCall->exception);
+
+        Event::assertDispatched('stripe-webhooks::my.type', function ($event, $eventPayload) use ($webhookCall) {
+            $this->assertInstanceOf(WebhookCall::class, $eventPayload);
+            $this->assertEquals($webhookCall->id, $eventPayload->id);
+
+            return true;
+        });
+
+        $this->assertEquals($webhookCall->id, cache('dummyjob')->id);
+    }
+
+    /** @test */
+    public function a_request_without_signature_with_verification_disabled()
+    {
+        // had to explicit disable signature verification
+        config(['stripe-webhooks.verify_signature' => false]);
+        cache()->clear();
+
+        $this->withoutExceptionHandling();
+
+        $payload = [
+            'type' => 'my.type',
+            'key' => 'value',
+        ];
+
+        $headers = [];
+
+        $this
+            ->postJson('stripe-webhooks', $payload, $headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+
+        $webhookCall = WebhookCall::first();
+
+        $this->assertEquals('my.type', $webhookCall->payload['type']);
+        $this->assertEquals($payload, $webhookCall->payload);
+        $this->assertNull($webhookCall->exception);
+
+        Event::assertDispatched('stripe-webhooks::my.type', function ($event, $eventPayload) use ($webhookCall) {
+            $this->assertInstanceOf(WebhookCall::class, $eventPayload);
+            $this->assertEquals($webhookCall->id, $eventPayload->id);
+
+            return true;
+        });
+
+        $this->assertEquals($webhookCall->id, cache('dummyjob')->id);
+    }
+
+    /** @test */
     public function a_request_with_an_invalid_signature_wont_be_logged()
     {
         $payload = [
