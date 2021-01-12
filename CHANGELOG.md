@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 2.5.0 - 2020-01-12
+
+- add `verify_signature` config option
+
 ## 2.4.0 - 2020-12-07
 
 - add support for PHP 8
