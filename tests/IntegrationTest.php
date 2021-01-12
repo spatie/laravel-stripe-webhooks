@@ -56,7 +56,7 @@ class IntegrationTest extends TestCase
     }
 
     /** @test */
-    public function a_request_with_invalid_signature_with_verification_disabled()
+    public function a_request_with_invalid_signature_with_verification_disabled_will_pass()
     {
         config(['stripe-webhooks.verify_signature' => false]);
         cache()->clear();
