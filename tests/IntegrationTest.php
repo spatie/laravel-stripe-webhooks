@@ -193,4 +193,25 @@ class IntegrationTest extends TestCase
             ->postJson('stripe-webhooks/somekey', $payload, $headers)
             ->assertSuccessful();
     }
+
+    /** @test */
+    public function a_request_will_only_be_processed_once()
+    {
+        $payload = [
+            'type' => 'my.type',
+            'key' => 'value',
+        ];
+
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this
+            ->postJson('stripe-webhooks', $payload, $headers)
+            ->assertSuccessful();
+
+        $this
+            ->postJson('stripe-webhooks', $payload, $headers)
+            ->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+    }
 }
