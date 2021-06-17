@@ -18,7 +18,7 @@ class StripeWebhooksController
                 config('stripe-webhooks.signing_secret'),
             'signature_header_name' => 'Stripe-Signature',
             'signature_validator' => StripeSignatureValidator::class,
-            'webhook_profile' => StripeWebhookProfile::class,
+            'webhook_profile' => config('stripe-webhooks.profile'),
             'webhook_model' => WebhookCall::class,
             'process_webhook_job' => config('stripe-webhooks.model'),
         ]);
