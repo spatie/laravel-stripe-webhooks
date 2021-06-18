@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 2.6.0 - 2021-06-18
+
+- process Stripe calls only once
+
 ## 2.5.0 - 2020-01-12
 
 - add `verify_signature` config option
