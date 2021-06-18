@@ -24,7 +24,12 @@ return [
      * Spatie\StripeWebhooks\ProcessStripeWebhookJob.
      */
     'model' => \Spatie\StripeWebhooks\ProcessStripeWebhookJob::class,
-    
+
+    /**
+     * This class determines if the webhook call should be stored and processed.
+     */
+    'profile' => \Spatie\StripeWebhooks\StripeWebhookProfile::class,
+
     /*
      * When disabled, the package will not verify if the signature is valid.
      * This can be handy in local environments.
