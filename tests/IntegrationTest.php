@@ -199,7 +199,7 @@ class IntegrationTest extends TestCase
     {
         $payload = [
             'type' => 'my.type',
-            'key' => 'value',
+            'id' => 'evt_123',
         ];
 
         $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
@@ -212,6 +212,6 @@ class IntegrationTest extends TestCase
             ->postJson('stripe-webhooks', $payload, $headers)
             ->assertSuccessful();
 
-        $this->assertCount(1, WebhookCall::get());
+        $this->assertCount(1, WebhookCall::where('payload->id', $payload['id'])->get());
     }
 }
