@@ -69,7 +69,7 @@ return [
     /**
      * This class determines if the webhook call should be stored and processed.
      */
-    'profile' => \Spatie\StripeWebhooks\StripeWebhookProfile::class,
+    'profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
 
     /*
      * When disabled, the package will not verify if the signature is valid.
@@ -112,7 +112,7 @@ Stripe will send out webhooks for several event types. You can find the [full li
 
 Stripe will sign all requests hitting the webhook url of your app. This package will automatically verify if the signature is valid. If it is not, the request was probably not sent by Stripe.
 
-Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. Stripe might occasionally send a webhook request [more than once](https://stripe.com/docs/webhooks/best-practices#duplicate-events). This package makes sure that each request will only be processed once. All webhook requests with a valid signature will be logged in the `webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
+Unless something goes terribly wrong, this package will always respond with a `200` to webhook requests. Sending a `200` will prevent Stripe from resending the same event over and over again. All webhook requests with a valid signature will be logged in the `webhook_calls` table. The table has a `payload` column where the entire payload of the incoming webhook is saved.
 
 If the signature is not valid, the request will not be logged in the `webhook_calls` table but a `Spatie\StripeWebhooks\WebhookFailed` exception will be thrown.
 If something goes wrong during the webhook request the thrown exception will be saved in the `exception` column. In that case the controller will send a `500` instead of `200`.
@@ -251,7 +251,7 @@ class MyCustomStripeWebhookJob extends ProcessStripeWebhookJob
 
 You may use your own logic to determine if a request should be processed or not. You can do this by specifying your own profile in the `profile` key of the `stripe-webhooks` config file. The class should implement `Spatie\WebhookClient\WebhookProfile\WebhookProfile`.
 
-In this example we will only process a request if it has an amount set:
+Stripe might occasionally send a webhook request [more than once](https://stripe.com/docs/webhooks/best-practices#duplicate-events). In this example we will make sure to only process a request if it wasn't processed before.
 
 ```php
 use Illuminate\Http\Request;
@@ -262,7 +262,7 @@ class StripeWebhookProfile implements WebhookProfile
 {
     public function shouldProcess(Request $request): bool
     {
-        return collect($request->get('data')['object'])->has('amount');
+        return ! WebhookCall::where('payload->id', $request->get('id'))->exists();
     }
 }
 ```
