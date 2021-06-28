@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 2.6.1 - 2021-06-28
+
+- Process everything by default (#89)
+- restore Postgres compat
+
 ## 2.6.0 - 2021-06-18
 
 - process Stripe calls only once
