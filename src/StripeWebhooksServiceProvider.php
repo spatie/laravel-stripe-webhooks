@@ -4,24 +4,19 @@ namespace Spatie\StripeWebhooks;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class StripeWebhooksServiceProvider extends ServiceProvider
+class StripeWebhooksServiceProvider extends PackageServiceProvider
 {
-    public function boot()
+    public function configurePackage(Package $package): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/stripe-webhooks.php' => config_path('stripe-webhooks.php'),
-            ], 'config');
-        }
+        $package
+            ->name('laravel-stripe-webhooks')
+            ->hasConfigFile();
 
         Route::macro('stripeWebhooks', function ($url) {
-            return Route::post($url, '\Spatie\StripeWebhooks\StripeWebhooksController');
+            return Route::post($url, StripeWebhooksController::class);
         });
-    }
-
-    public function register()
-    {
-        $this->mergeConfigFrom(__DIR__.'/../config/stripe-webhooks.php', 'stripe-webhooks');
     }
 }

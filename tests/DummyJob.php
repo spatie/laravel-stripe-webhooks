@@ -6,13 +6,9 @@ use Spatie\WebhookClient\Models\WebhookCall;
 
 class DummyJob
 {
-    /** @var \Spatie\WebhookClient\Models\WebhookCall */
-    public $webhookCall;
-
-    public function __construct(WebhookCall $webhookCall)
-    {
-        $this->webhookCall = $webhookCall;
-    }
+    public function __construct(
+        public WebhookCall $webhookCall
+    ) {}
 
     public function handle()
     {

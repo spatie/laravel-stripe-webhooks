@@ -8,11 +8,9 @@ use Spatie\WebhookClient\Models\WebhookCall;
 
 class StripeWebhookCallTest extends TestCase
 {
-    /** @var \Spatie\StripeWebhooks\ProcessStripeWebhookJob */
-    public $processStripeWebhookJob;
+    public ProcessStripeWebhookJob $processStripeWebhookJob;
 
-    /** @var \Spatie\WebhookClient\Models\WebhookCall */
-    public $webhookCall;
+    public WebhookCall $webhookCall;
 
     public function setUp(): void
     {
