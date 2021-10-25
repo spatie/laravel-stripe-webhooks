@@ -24,6 +24,7 @@ class StripeWebhookCallTest extends TestCase
 
         $this->webhookCall = WebhookCall::create([
             'name' => 'stripe',
+            'url' => '/stripe',
             'payload' => ['type' => 'my.type', 'name' => 'value'],
         ]);
 
