@@ -8,6 +8,8 @@ All notable changes to `laravel-stripe-webhooks` will be documented in this file
 - require PHP 8
 - require Laravel 8
 
+No changes to the API have been made, so it should be an easy upgrade
+
 ## 2.6.2 - 2021-10-04
 
 - Fix model from config not being used
