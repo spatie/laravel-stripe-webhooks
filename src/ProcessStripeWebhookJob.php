@@ -3,7 +3,7 @@
 namespace Spatie\StripeWebhooks;
 
 use Spatie\StripeWebhooks\Exceptions\WebhookFailed;
-use Spatie\WebhookClient\ProcessWebhookJob;
+use Spatie\WebhookClient\Jobs\ProcessWebhookJob;
 
 class ProcessStripeWebhookJob extends ProcessWebhookJob
 {
