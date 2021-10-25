@@ -15,13 +15,13 @@ class StripeSignatureValidator implements SignatureValidator
         if (! config('stripe-webhooks.verify_signature')) {
             return true;
         }
-        
+
         $signature = $request->header('Stripe-Signature');
         $secret = $config->signingSecret;
 
         try {
             Webhook::constructEvent($request->getContent(), $signature, $secret);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return false;
         }
 

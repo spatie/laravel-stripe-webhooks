@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## 3.0.0 - 2021-10-25
+
+- use spatie/laravel-webhook-client v3
+- require PHP 8
+- require Laravel 8
+
 ## 2.6.2 - 2021-10-04
 
 - Fix model from config not being used
