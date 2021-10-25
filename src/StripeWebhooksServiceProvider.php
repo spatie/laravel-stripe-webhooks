@@ -3,7 +3,6 @@
 namespace Spatie\StripeWebhooks;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

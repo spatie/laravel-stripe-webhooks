@@ -8,7 +8,8 @@ class DummyJob
 {
     public function __construct(
         public WebhookCall $webhookCall
-    ) {}
+    ) {
+    }
 
     public function handle()
     {
