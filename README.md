@@ -298,6 +298,46 @@ Example config for Connect might look like:
 
 [Laravel Cashier](https://laravel.com/docs/5.5/billing#handling-stripe-webhooks) allows you to easily handle Stripe subscriptions. You may install it in the same application together with `laravel-stripe-webhooks`. There are no known conflicts.
 
+#Upgrade migration Here's an example: from 2.x to 3.x
+```php
+<?php
+
+declare(strict_types=1);
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddColumnsToWebhookCalls extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up(): void
+    {
+        Schema::table('webhook_calls', function (Blueprint $table) {
+            $table->string('url');
+            $table->json('headers')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down(): void
+    {
+        Schema::table('webhook_calls', function (Blueprint $table) {
+            $table->dropColumn('url');
+            $table->dropColumn('headers');
+        });
+    }
+}
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.
