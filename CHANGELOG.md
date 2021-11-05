@@ -2,6 +2,8 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.0.1...HEAD)
+
 ## 3.0.0 - 2021-10-25
 
 - use spatie/laravel-webhook-client v3
