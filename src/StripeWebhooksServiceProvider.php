@@ -15,7 +15,7 @@ class StripeWebhooksServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
 
         Route::macro('stripeWebhooks', function ($url) {
-            return Route::post($url, StripeWebhooksController::class);
+            return Route::post($url, '\Spatie\StripeWebhooks\StripeWebhooksController');
         });
     }
 }
