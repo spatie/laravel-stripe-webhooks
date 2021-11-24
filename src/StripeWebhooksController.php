@@ -19,12 +19,10 @@ class StripeWebhooksController
             'signature_header_name' => 'Stripe-Signature',
             'signature_validator' => StripeSignatureValidator::class,
             'webhook_profile' => config('stripe-webhooks.profile'),
-            'webhook_model' => config('strip-webhooks.model', WebhookCall::class),
+            'webhook_model' => config('stripe-webhooks.model', WebhookCall::class),
             'process_webhook_job' => config('stripe-webhooks.model'),
         ]);
 
-        (new WebhookProcessor($request, $webhookConfig))->process();
-
-        return response()->json(['message' => 'ok']);
+        return (new WebhookProcessor($request, $webhookConfig))->process();
     }
 }
