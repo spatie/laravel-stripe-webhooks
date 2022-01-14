@@ -3,7 +3,6 @@
 namespace Spatie\StripeWebhooks;
 
 use Illuminate\Http\Request;
-use Spatie\WebhookClient\Models\WebhookCall;
 use Spatie\WebhookClient\WebhookConfig;
 use Spatie\WebhookClient\WebhookProcessor;
 
@@ -19,12 +18,10 @@ class StripeWebhooksController
             'signature_header_name' => 'Stripe-Signature',
             'signature_validator' => StripeSignatureValidator::class,
             'webhook_profile' => config('stripe-webhooks.profile'),
-            'webhook_model' => config('strip-webhooks.model', WebhookCall::class),
-            'process_webhook_job' => config('stripe-webhooks.model'),
+            'webhook_model' => config('stripe-webhooks.model'),
+            'process_webhook_job' => ProcessStripeWebhookJob::class,
         ]);
 
-        (new WebhookProcessor($request, $webhookConfig))->process();
-
-        return response()->json(['message' => 'ok']);
+        return (new WebhookProcessor($request, $webhookConfig))->process();
     }
 }
