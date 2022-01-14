@@ -2,7 +2,11 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.0.2...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.0...HEAD)
+
+## [3.1.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.0.2...3.1.0) - 2022-01-14
+
+- allow Laravel 9
 
 ## [3.0.2](https://github.com/spatie/laravel-stripe-webhooks/compare/3.0.1...3.0.2) - 2021-11-24
 
