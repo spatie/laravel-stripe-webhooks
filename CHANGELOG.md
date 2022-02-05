@@ -2,7 +2,15 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.0...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.1...HEAD)
+
+## [3.1.1](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.0...3.1.1) - 2022-02-05
+
+## What's Changed
+
+- feat: process webhook once by @ankurk91 in https://github.com/spatie/laravel-stripe-webhooks/pull/107
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.0...3.1.1
 
 ## [3.1.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.0.2...3.1.0) - 2022-01-14
 
