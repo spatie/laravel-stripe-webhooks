@@ -10,6 +10,6 @@ class StripeWebhookProfile implements WebhookProfile
 {
     public function shouldProcess(Request $request): bool
     {
-        return ! WebhookCall::where('payload->id', $request->get('id'))->exists();
+        return ! WebhookCall::where('name', 'stripe')->where('payload->id', $request->get('id'))->exists();
     }
 }
