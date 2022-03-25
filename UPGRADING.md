@@ -57,3 +57,36 @@ class AddColumnsToWebhookCalls extends Migration
     }
 }
 ```
+
+
+### Config file changes
+
+If you have published a config file previously please follow these steps:
+
+1, Update "model" to point to the following WebhookCall class:
+
+```php
+    /*
+     * The classname of the model to be used. The class should equal or extend
+     * Spatie\WebhookClient\Models\WebhookCall.
+     */
+    'model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+```
+
+2, Add two new references for profile and verify_signature:
+
+```php
+    /**
+     * This class determines if the webhook call should be stored and processed.
+     */
+    'profile' => \Spatie\StripeWebhooks\StripeWebhookProfile::class,
+
+    /*
+     * When disabled, the package will not verify if the signature is valid.
+     * This can be handy in local environments.
+     */
+    'verify_signature' => env('STRIPE_SIGNATURE_VERIFY', true),
+
+    ```
+
+Please see the readme for more information on verify_signature and how its used.
