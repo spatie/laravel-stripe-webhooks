@@ -22,7 +22,7 @@ We invest a lot of resources into creating [best in class open source packages](
 
 We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
-### Upgrading to 2.0
+### Upgrading from v1 to v2? or v2 to v3?: 
 
 Please see [UPGRADING](UPGRADING.md) for details.
 
