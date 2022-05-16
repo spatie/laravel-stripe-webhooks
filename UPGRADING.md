@@ -40,6 +40,7 @@ class AddColumnsToWebhookCalls extends Migration
         Schema::table('webhook_calls', function (Blueprint $table) {
             $table->string('url')->nullable();
             $table->json('headers')->nullable();
+            $table->json('payload')->change();
         });
     }
 
@@ -53,6 +54,7 @@ class AddColumnsToWebhookCalls extends Migration
         Schema::table('webhook_calls', function (Blueprint $table) {
             $table->dropColumn('url');
             $table->dropColumn('headers');
+            $table->text('payload')->change();
         });
     }
 }
