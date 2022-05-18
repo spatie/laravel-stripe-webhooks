@@ -2,7 +2,23 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.2...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.3...HEAD)
+
+## [3.1.3](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.2...3.1.3) - 2022-05-18
+
+## What's Changed
+
+- Update UPGRADING.md by @flatcapco in https://github.com/spatie/laravel-stripe-webhooks/pull/116
+- Update README.md by @flatcapco in https://github.com/spatie/laravel-stripe-webhooks/pull/117
+- UPGRADING.md v3: Add payload column type change by @andzandz in https://github.com/spatie/laravel-stripe-webhooks/pull/122
+- Allow stripe sdk v8 by @ankurk91 in https://github.com/spatie/laravel-stripe-webhooks/pull/123
+
+## New Contributors
+
+- @flatcapco made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/116
+- @andzandz made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/122
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.2...3.1.3
 
 ## [3.1.2](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.1...3.1.2) - 2022-03-07
 
