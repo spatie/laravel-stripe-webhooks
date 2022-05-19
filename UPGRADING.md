@@ -78,7 +78,7 @@ If you have published a config file previously please follow these steps:
 2, Add two new references for profile and verify_signature:
 
 ```php
-    /**
+    /*
      * This class determines if the webhook call should be stored and processed.
      */
     'profile' => \Spatie\StripeWebhooks\StripeWebhookProfile::class,
