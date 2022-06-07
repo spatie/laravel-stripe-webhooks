@@ -62,7 +62,7 @@ class StripeWebhookCallTest extends TestCase
     {
         config([
             'stripe-webhooks.jobs' => [],
-            'stripe-webhooks.default_job' => DummyJob::class
+            'stripe-webhooks.default_job' => DummyJob::class,
         ]);
 
         $this->processStripeWebhookJob->handle();
