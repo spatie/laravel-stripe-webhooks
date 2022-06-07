@@ -52,6 +52,13 @@ return [
     'signing_secret' => env('STRIPE_WEBHOOK_SECRET'),
 
     /*
+     * You can define a default job that should be run for all other Stripe event type
+     * without a job defined in next configuration.
+     * You may leave it empty to store the job in database but without processing it.
+     */
+    'default_job' => '',
+
+    /*
      * You can define the job that should be run when a certain webhook hits your application
      * here. The key is the name of the Stripe event type with the `.` replaced by a `_`.
      *
@@ -169,6 +176,16 @@ After having created your job you must register it at the `jobs` array in the `s
 'jobs' => [
     'source_chargeable' => \App\Jobs\StripeWebhooks\HandleChargeableSource::class,
 ],
+```
+
+In case you want to configure one job as default to process all undefined event, you may set the job at `default_job` in
+the `stripe-webhooks.php` config file. The value should be the fully qualified classname.
+
+By default, the configuration is an empty string `''`, which will only store the event in database but without handling.
+
+```php
+// config/stripe-webhooks.php
+'default_job' => \App\Jobs\StripeWebhooks\HandleOtherEvent::class,
 ```
 
 ### Handling webhook requests using events
