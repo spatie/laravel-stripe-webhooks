@@ -2,7 +2,21 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.3...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.0...HEAD)
+
+## [3.2.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.3...3.2.0) - 2022-06-07
+
+### What's Changed
+
+- Update UPGRADING.md by @mstaack in https://github.com/spatie/laravel-stripe-webhooks/pull/125
+- let user able to define a default job as a catchall event handler by @wanghanlin in https://github.com/spatie/laravel-stripe-webhooks/pull/128
+
+### New Contributors
+
+- @mstaack made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/125
+- @wanghanlin made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/128
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.3...3.2.0
 
 ## [3.1.3](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.2...3.1.3) - 2022-05-18
 
