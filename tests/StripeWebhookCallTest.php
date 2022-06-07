@@ -58,6 +58,19 @@ class StripeWebhookCallTest extends TestCase
     }
 
     /** @test */
+    public function it_will_dispatch_jobs_when_default_job_is_configured()
+    {
+        config([
+            'stripe-webhooks.jobs' => [],
+            'stripe-webhooks.default_job' => DummyJob::class
+        ]);
+
+        $this->processStripeWebhookJob->handle();
+
+        $this->assertEquals($this->webhookCall->id, cache('dummyjob')->id);
+    }
+
+    /** @test */
     public function it_will_dispatch_events_even_when_no_corresponding_job_is_configured()
     {
         config(['stripe-webhooks.jobs' => ['another_type' => DummyJob::class]]);
