@@ -32,6 +32,6 @@ class ProcessStripeWebhookJob extends ProcessWebhookJob
     {
         $jobConfigKey = str_replace('.', '_', $eventType);
 
-        return config("stripe-webhooks.jobs.{$jobConfigKey}", '');
+        return config("stripe-webhooks.jobs.{$jobConfigKey}", config('stripe-webhooks.default_job', ''));
     }
 }
