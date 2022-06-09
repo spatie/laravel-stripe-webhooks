@@ -316,6 +316,40 @@ Example config for Connect might look like:
 'signing_secret_connect' => 'whsec_123',
 ```
 
+### Transforming the Webhook payload into a Stripe Object
+
+You can transform the Webhook payload into a Stripe object to assist in accessing its various methods and properties.
+
+To do this, use the `Stripe\Event::constructFrom($payload)` method with the `WebhookCall`'s payload:
+
+```php
+use Stripe\Event;
+
+// ...
+
+public function handle(WebhookCall $webhookCall)
+{
+    /** @var \Stripe\StripeObject|null */
+    $stripeObject = Event::constructFrom($webhookCall->payload)->data?->object;
+}
+```
+
+For example, if you have setup a Stripe webhook for the `invoice.created` event, you can transform the payload into a `StripeInvoice` object:
+
+```php
+/** @var \Stripe\StripeInvoice|null */
+$stripeInvoice = Event::constructFrom($webhookCall->payload)->data?->object;
+
+// $stripeInvoice->status
+// $stripeInvoice->amount_due
+// $stripeInvoice->amount_paid
+// $stripeInvoice->amount_remaining
+
+foreach ($stripeInvoice->lines as $invoiceLine) {
+    // ...
+}
+```
+
 ### About Cashier
 
 [Laravel Cashier](https://laravel.com/docs/5.5/billing#handling-stripe-webhooks) allows you to easily handle Stripe subscriptions. You may install it in the same application together with `laravel-stripe-webhooks`. There are no known conflicts.
