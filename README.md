@@ -320,7 +320,7 @@ Example config for Connect might look like:
 
 You can transform the Webhook payload into a Stripe object to assist in accessing its various methods and properties.
 
-To do this, use the `Stripe\Event::constructFrom($payload)` method with the WebhookCall's payload:
+To do this, use the `Stripe\Event::constructFrom($payload)` method with the `WebhookCall`'s payload:
 
 ```php
 use Stripe\Event;
