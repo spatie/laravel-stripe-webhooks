@@ -2,7 +2,20 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.0...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.1...HEAD)
+
+## [3.2.1](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.0...3.2.1) - 2022-08-03
+
+### What's Changed
+
+- Add docs for transforming `WebhookCall` payload into Stripe object by @stevebauman in https://github.com/spatie/laravel-stripe-webhooks/pull/129
+- allow stripe sdk v9 by @ankurk91 in https://github.com/spatie/laravel-stripe-webhooks/pull/130
+
+### New Contributors
+
+- @stevebauman made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/129
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.0...3.2.1
 
 ## [3.2.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.1.3...3.2.0) - 2022-06-07
 
