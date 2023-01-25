@@ -2,7 +2,20 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.2...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.3...HEAD)
+
+## [3.2.3](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.2...3.2.3) - 2023-01-25
+
+### What's Changed
+
+- Add PHP 8.2 Support by @patinthehat in https://github.com/spatie/laravel-stripe-webhooks/pull/144
+- Laravel 10.x Compatibility by @laravel-shift in https://github.com/spatie/laravel-stripe-webhooks/pull/151
+
+### New Contributors
+
+- @patinthehat made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/144
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.2...3.2.3
 
 ## [3.2.2](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.1...3.2.2) - 2022-12-02
 
