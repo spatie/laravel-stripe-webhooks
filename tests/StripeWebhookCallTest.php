@@ -88,4 +88,24 @@ class StripeWebhookCallTest extends TestCase
 
         $this->assertNull(cache('dummyjob'));
     }
+
+    /** @test */
+    public function it_can_specify_a_connection_in_the_config()
+    {
+        config(['stripe-webhooks.connection' => 'some-connection']);
+
+        $processStripeWebhookJob = new ProcessStripeWebhookJob($this->webhookCall);
+
+        $this->assertEquals('some-connection', $processStripeWebhookJob->connection);
+    }
+
+    /** @test */
+    public function it_can_specify_a_queue_in_the_config()
+    {
+        config(['stripe-webhooks.queue' => 'some-queue']);
+
+        $processStripeWebhookJob = new ProcessStripeWebhookJob($this->webhookCall);
+
+        $this->assertEquals('some-queue', $processStripeWebhookJob->queue);
+    }
 }
