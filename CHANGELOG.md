@@ -2,7 +2,19 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.3...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.3.0...HEAD)
+
+## [3.3.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.3...3.3.0) - 2023-06-06
+
+### What's Changed
+
+- Configurable connection and queue by @diogogomeswww in https://github.com/spatie/laravel-stripe-webhooks/pull/159
+
+### New Contributors
+
+- @diogogomeswww made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/159
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.3...3.3.0
 
 ## [3.2.3](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.2...3.2.3) - 2023-01-25
 
