@@ -2,7 +2,20 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.3.0...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.4.0...HEAD)
+
+## [3.4.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.3.0...3.4.0) - 2023-08-18
+
+### What's Changed
+
+- Update README.md by @Khuthaily in https://github.com/spatie/laravel-stripe-webhooks/pull/163
+- Allow stripe-php v11 by @ankurk91 in https://github.com/spatie/laravel-stripe-webhooks/pull/165
+
+### New Contributors
+
+- @Khuthaily made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/163
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.3.0...3.4.0
 
 ## [3.3.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.2.3...3.3.0) - 2023-06-06
 
