@@ -1,7 +1,7 @@
 # Handle Stripe Webhooks in a Laravel application
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/spatie/laravel-stripe-webhooks/run-tests?label=tests)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/spatie/laravel-stripe-webhooks/run-tests.yml?label=tests&branch=main)
 ![Check & fix styling](https://github.com/spatie/laravel-stripe-webhooks/workflows/Check%20&%20fix%20styling/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-stripe-webhooks.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-stripe-webhooks)
 
