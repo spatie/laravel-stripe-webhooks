@@ -2,7 +2,15 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.8.0...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.9.0...HEAD)
+
+## [3.9.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.8.0...3.9.0) - 2024-07-22
+
+### What's Changed
+
+* Allow stripe/stripe-php:^15.0 by @pb30 in https://github.com/spatie/laravel-stripe-webhooks/pull/179
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.8.0...3.9.0
 
 ## [3.8.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.7.0...3.8.0) - 2024-05-02
 
