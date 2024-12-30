@@ -2,7 +2,19 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.0...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.1...HEAD)
+
+## [3.10.1](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.0...3.10.1) - 2024-12-30
+
+### What's Changed
+
+* Add null union type to fix php 8.4 deprecation message by @billypoke in https://github.com/spatie/laravel-stripe-webhooks/pull/183
+
+### New Contributors
+
+* @billypoke made their first contribution in https://github.com/spatie/laravel-stripe-webhooks/pull/183
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.0...3.10.1
 
 ## [3.10.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.9.0...3.10.0) - 2024-10-07
 
