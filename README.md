@@ -42,11 +42,16 @@ This is the contents of the config file that will be published at `config/stripe
 
 ```php
 return [
-    /*
+   /*
      * Stripe will sign each webhook using a secret. You can find the used secret at the
      * webhook configuration settings: https://dashboard.stripe.com/account/webhooks.
+     *
+     * You can specify a single secret as a string, or multiple secrets as a comma-separated
+     * string in your .env file.
+     *
+     * E.g. STRIPE_WEBHOOK_SECRET="whsec_abc,whsec_xyz"
      */
-    'signing_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    'signing_secret' => explode(',', env('STRIPE_WEBHOOK_SECRET')),
 
     /*
      * You can define a default job that should be run for all other Stripe event type
@@ -92,7 +97,17 @@ return [
 ];
 ```
 
-In the `signing_secret` key of the config file you should add a valid webhook secret. You can find the secret used at [the webhook configuration settings on the Stripe dashboard](https://dashboard.stripe.com/account/webhooks).
+In your .env file, add your webhook secret. You can find this in your Stripe dashboard in the webhook configuration settings. [the webhook configuration settings on the Stripe dashboard](https://dashboard.stripe.com/account/webhooks).
+
+```
+STRIPE_WEBHOOK_SECRET="whsec_..."
+```
+
+If you need to handle webhooks from multiple Stripe endpoints that each have their own secret (for example, when using both traditional "snapshot" payloads and newer "thin" payloads), you can add all secrets to your .env file as a comma-separated list. The package will automatically try each secret until it finds a match.
+
+```
+STRIPE_WEBHOOK_SECRET="whsec_snapshot_abc,whsec_thin_xyz"
+```
 
 Next, you must publish the migration with:
 ```bash

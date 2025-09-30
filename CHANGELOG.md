@@ -3,6 +3,8 @@
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
 ## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.3...HEAD)
+### What's Changed
+- Add support for multiple signing secrets
 
 ## [3.10.3](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.2...3.10.3) - 2025-04-04
 

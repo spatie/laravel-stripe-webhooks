@@ -2,10 +2,15 @@
 
 return [
     /*
-     * Stripe will sign each webhook using a secret. You can find the used secret at the
-     * webhook configuration settings: https://dashboard.stripe.com/account/webhooks.
-     */
-    'signing_secret' => env('STRIPE_WEBHOOK_SECRET'),
+      * Stripe will sign each webhook using a secret. You can find the used secret at the
+      * webhook configuration settings: https://dashboard.stripe.com/account/webhooks.
+      *
+      * You can specify a single secret as a string, or multiple secrets as a comma-separated
+      * string in your .env file.
+      *
+      * E.g. STRIPE_WEBHOOK_SECRET="whsec_abc,whsec_xyz"
+      */
+    'signing_secret' => explode(',', env('STRIPE_WEBHOOK_SECRET')),
 
     /*
      * You can define a default job that should be run for all other Stripe event type
