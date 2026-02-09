@@ -2,6 +2,7 @@
 
 namespace Spatie\StripeWebhooks\Tests;
 
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 use Spatie\WebhookClient\Models\WebhookCall;
@@ -107,5 +108,23 @@ class StripeWebhookCallTest extends TestCase
         $processStripeWebhookJob = new ProcessStripeWebhookJob($this->webhookCall);
 
         $this->assertEquals('some-queue', $processStripeWebhookJob->queue);
+    }
+
+    /** @test */
+    public function it_dispatches_the_configured_job_on_the_configured_connection_and_queue()
+    {
+        Bus::fake();
+
+        config([
+            'stripe-webhooks.connection' => 'some-connection',
+            'stripe-webhooks.queue' => 'some-queue',
+        ]);
+
+        $processStripeWebhookJob = new ProcessStripeWebhookJob($this->webhookCall);
+        $processStripeWebhookJob->handle();
+
+        Bus::assertDispatched(DummyJob::class, function (DummyJob $job) {
+            return $job->connection === 'some-connection' && $job->queue === 'some-queue';
+        });
     }
 }
