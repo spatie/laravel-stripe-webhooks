@@ -2,7 +2,15 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.5...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.6...HEAD)
+
+## [3.10.6](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.5...3.10.6) - 2026-02-09
+
+### What's Changed
+
+* Fix #193: Dispatch configured jobs on the configured connection and queue
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.5...3.10.6
 
 ## [3.10.5](https://github.com/spatie/laravel-stripe-webhooks/compare/3.10.4...3.10.5) - 2026-01-13
 
