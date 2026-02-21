@@ -4,9 +4,9 @@ namespace Spatie\StripeWebhooks\Tests;
 
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 use Spatie\WebhookClient\Models\WebhookCall;
-use PHPUnit\Framework\Attributes\Test;
 
 class StripeWebhookCallTest extends TestCase
 {

@@ -4,8 +4,8 @@ namespace Spatie\StripeWebhooks\Tests;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Spatie\WebhookClient\Models\WebhookCall;
 use PHPUnit\Framework\Attributes\Test;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class IntegrationTest extends TestCase
 {
