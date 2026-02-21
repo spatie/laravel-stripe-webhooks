@@ -5,6 +5,7 @@ namespace Spatie\StripeWebhooks\Tests;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Spatie\WebhookClient\Models\WebhookCall;
+use PHPUnit\Framework\Attributes\Test;
 
 class IntegrationTest extends TestCase
 {
@@ -21,7 +22,7 @@ class IntegrationTest extends TestCase
         cache()->clear();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_a_valid_request()
     {
         $this->withoutExceptionHandling();
@@ -55,7 +56,7 @@ class IntegrationTest extends TestCase
         $this->assertEquals($webhookCall->id, cache('dummyjob')->id);
     }
 
-    /** @test */
+    #[Test]
     public function a_request_with_invalid_signature_with_verification_disabled_will_pass()
     {
         config(['stripe-webhooks.verify_signature' => false]);
@@ -92,7 +93,7 @@ class IntegrationTest extends TestCase
         $this->assertEquals($webhookCall->id, cache('dummyjob')->id);
     }
 
-    /** @test */
+    #[Test]
     public function a_request_without_signature_with_verification_disabled()
     {
         // had to explicit disable signature verification
@@ -130,7 +131,7 @@ class IntegrationTest extends TestCase
         $this->assertEquals($webhookCall->id, cache('dummyjob')->id);
     }
 
-    /** @test */
+    #[Test]
     public function a_request_with_an_invalid_signature_wont_be_logged()
     {
         $payload = [
@@ -151,7 +152,7 @@ class IntegrationTest extends TestCase
         $this->assertNull(cache('dummyjob'));
     }
 
-    /** @test */
+    #[Test]
     public function a_request_with_an_invalid_payload_will_be_logged_but_events_and_jobs_will_not_be_dispatched()
     {
         $payload = ['invalid_payload'];
@@ -194,7 +195,7 @@ class IntegrationTest extends TestCase
             ->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function a_request_will_only_be_processed_once()
     {
         $payload = [

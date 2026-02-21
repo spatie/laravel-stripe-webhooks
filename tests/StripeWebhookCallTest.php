@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Spatie\StripeWebhooks\ProcessStripeWebhookJob;
 use Spatie\WebhookClient\Models\WebhookCall;
+use PHPUnit\Framework\Attributes\Test;
 
 class StripeWebhookCallTest extends TestCase
 {
@@ -30,7 +31,7 @@ class StripeWebhookCallTest extends TestCase
         $this->processStripeWebhookJob = new ProcessStripeWebhookJob($this->webhookCall);
     }
 
-    /** @test */
+    #[Test]
     public function it_will_fire_off_the_configured_job()
     {
         $this->processStripeWebhookJob->handle();
@@ -38,7 +39,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertEquals($this->webhookCall->id, cache('dummyjob')->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_will_not_dispatch_a_job_for_another_type()
     {
         config(['stripe-webhooks.jobs' => ['another_type' => DummyJob::class]]);
@@ -48,7 +49,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertNull(cache('dummyjob'));
     }
 
-    /** @test */
+    #[Test]
     public function it_will_not_dispatch_jobs_when_no_jobs_are_configured()
     {
         config(['stripe-webhooks.jobs' => []]);
@@ -58,7 +59,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertNull(cache('dummyjob'));
     }
 
-    /** @test */
+    #[Test]
     public function it_will_dispatch_jobs_when_default_job_is_configured()
     {
         config([
@@ -71,7 +72,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertEquals($this->webhookCall->id, cache('dummyjob')->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_will_dispatch_events_even_when_no_corresponding_job_is_configured()
     {
         config(['stripe-webhooks.jobs' => ['another_type' => DummyJob::class]]);
@@ -90,7 +91,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertNull(cache('dummyjob'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_specify_a_connection_in_the_config()
     {
         config(['stripe-webhooks.connection' => 'some-connection']);
@@ -100,7 +101,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertEquals('some-connection', $processStripeWebhookJob->connection);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_specify_a_queue_in_the_config()
     {
         config(['stripe-webhooks.queue' => 'some-queue']);
@@ -110,7 +111,7 @@ class StripeWebhookCallTest extends TestCase
         $this->assertEquals('some-queue', $processStripeWebhookJob->queue);
     }
 
-    /** @test */
+    #[Test]
     public function it_dispatches_the_configured_job_on_the_configured_connection_and_queue()
     {
         Bus::fake();
