@@ -214,5 +214,72 @@ class IntegrationTest extends TestCase
             ->assertSuccessful();
 
         $this->assertCount(1, WebhookCall::where('payload->id', $payload['id'])->get());
+        Event::assertDispatchedTimes('stripe-webhooks::my.type', 1);
+    }
+
+    #[Test]
+    public function the_payload_event_id_takes_precedence_over_query_parameters()
+    {
+        $payload = [
+            'type' => 'my.type',
+            'id' => 'evt_body',
+        ];
+
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this->postJson('stripe-webhooks', $payload, $headers)->assertSuccessful();
+        $this->postJson('stripe-webhooks?id=evt_query', $payload, $headers)->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        Event::assertDispatchedTimes('stripe-webhooks::my.type', 1);
+
+        $payload['id'] = 'evt_next';
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this->postJson('stripe-webhooks?id=evt_body', $payload, $headers)->assertSuccessful();
+
+        $this->assertEquals(['evt_body', 'evt_next'], WebhookCall::orderBy('id')->get()->pluck('payload.id')->all());
+        Event::assertDispatchedTimes('stripe-webhooks::my.type', 2);
+        $this->assertEquals('evt_next', cache('dummyjob')->payload['id']);
+    }
+
+    #[Test]
+    public function an_event_id_from_another_webhook_source_does_not_suppress_a_stripe_event()
+    {
+        WebhookCall::create([
+            'name' => 'another-provider',
+            'url' => '/another-webhook',
+            'payload' => ['id' => 'evt_shared', 'type' => 'my.type'],
+        ]);
+
+        $payload = ['id' => 'evt_shared', 'type' => 'my.type'];
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this->postJson('stripe-webhooks', $payload, $headers)->assertSuccessful();
+        $this->postJson('stripe-webhooks', $payload, $headers)->assertSuccessful();
+
+        $this->assertCount(2, WebhookCall::get());
+        $this->assertCount(1, WebhookCall::where('name', 'stripe')->get());
+        Event::assertDispatchedTimes('stripe-webhooks::my.type', 1);
+        $this->assertEquals('stripe', cache('dummyjob')->name);
+    }
+
+    #[Test]
+    public function a_duplicate_event_id_is_not_processed_again_for_a_different_stripe_event_type()
+    {
+        $payload = ['id' => 'evt_shared', 'type' => 'my.type'];
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this->postJson('stripe-webhooks', $payload, $headers)->assertSuccessful();
+
+        $payload['type'] = 'another.type';
+        $headers = ['Stripe-Signature' => $this->determineStripeSignature($payload)];
+
+        $this->postJson('stripe-webhooks', $payload, $headers)->assertSuccessful();
+
+        $this->assertCount(1, WebhookCall::get());
+        $this->assertEquals('my.type', WebhookCall::first()->payload['type']);
+        Event::assertDispatchedTimes('stripe-webhooks::my.type', 1);
+        Event::assertNotDispatched('stripe-webhooks::another.type');
     }
 }

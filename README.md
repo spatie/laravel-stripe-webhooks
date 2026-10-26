@@ -287,10 +287,12 @@ class StripeWebhookProfile implements WebhookProfile
 {
     public function shouldProcess(Request $request): bool
     {
-        return ! WebhookCall::where('payload->id', $request->get('id'))->exists();
+        return ! WebhookCall::where('payload->id', $request->input('id'))->exists();
     }
 }
 ```
+
+The default profile checks event IDs only against stored Stripe webhooks. It reads the ID using `input('id')`, so an ID in the JSON body takes precedence over a query parameter and request attributes are not used.
 
 ### Handling multiple signing secrets
 
