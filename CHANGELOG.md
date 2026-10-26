@@ -2,7 +2,19 @@
 
 All notable changes to `laravel-stripe-webhooks` will be documented in this file
 
-## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.12.0...HEAD)
+## [Unreleased](https://github.com/spatie/laravel-stripe-webhooks/compare/3.12.1...HEAD)
+
+## [3.12.1](https://github.com/spatie/laravel-stripe-webhooks/compare/3.12.0...3.12.1) - 2026-10-26
+
+### What’s Changed
+
+* Replace deprecated `Request::get()` with Laravel’s `input()` when checking Stripe event IDs, avoiding the Symfony HttpFoundation 7.4 deprecation, by @adriandmitroca in https://github.com/spatie/laravel-stripe-webhooks/pull/203.
+* Prefer the JSON/body event ID over conflicting query parameters, matching the stored payload. Request attributes no longer override the event ID. Duplicate-event suppression remains scoped to Stripe webhooks and keyed by event ID, regardless of event type.
+* Add signed-request regression coverage for event-ID precedence and duplicate-event suppression.
+
+No PHP, Laravel, Stripe SDK or other dependency requirements have changed.
+
+**Full Changelog**: https://github.com/spatie/laravel-stripe-webhooks/compare/3.12.0...3.12.1
 
 ## [3.12.0](https://github.com/spatie/laravel-stripe-webhooks/compare/3.11.1...3.12.0) - 2026-10-08
 
