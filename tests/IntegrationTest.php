@@ -177,7 +177,7 @@ class IntegrationTest extends TestCase
         $this->assertNull(cache('dummyjob'));
     }
 
-    /** @test * */
+    #[Test]
     public function a_request_with_a_config_key_will_use_the_correct_signing_secret()
     {
         config()->set('stripe-webhooks.signing_secret', 'secret1');
